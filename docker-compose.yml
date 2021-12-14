@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+
+# I like <your local path> to be 
+# C:/DockerLinux/Volumes/<project>/<image-description> eg c:/DockerLinux/Volumes/backend-template/mssql
+# The benefit over a named volume is that I can interact with the file system.
+# I've found that useful for restoring database backups to docker sql server
+# Otherwise, just create a named volume and use that
+
+#  mssql:
+#    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+#    environment:
+#      - ACCEPT_EULA=Y
+#      - SA_PASSWORD=str@ngP@ssw@rd
+#    ports:
+#      - "1433:1433"
+#    volumes:
+#      - <your local path>:/var/opt/mssql/data
+  
+  # Structured logging - Uses Serilog to log.
+  seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:80"
+    volumes:
+      - <your local path>:/data
+
+  #Azure Storage emulator
+  azure-storage:
+    ports:
+      - '10000:10000'
+      - '10001:10001'
+      - '10002:10002'
+    image: mcr.microsoft.com/azure-storage/azurite
+    volumes:
+      - <your local path>:/workspace
+  
+  # Fake email services
+  papercut:
+    image: jijiechen/papercut
+    ports:
+      - "25:25"
+      - "37408:37408"
