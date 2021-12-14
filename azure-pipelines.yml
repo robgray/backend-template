@@ -1,0 +1,93 @@
+trigger:
+- master
+
+name: 1.0.$(BuildID)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+
+#resources:
+#  containers:
+#  - container: mssql
+#    image: mcr.microsoft.com/mssql/server:2019-latest
+#    ports:
+#      - 1433:1433
+#    env:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: Password123
+
+#services:
+#  mssql: mssql
+
+steps:
+ 
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
+
+- task: Cache@2
+  inputs:
+    key: 'nuget | "$(Agent.OS)" | **/*.csproj,!**/bin/**'
+    restoreKeys: |
+        nuget | "$(Agent.OS)"
+    path: $(NUGET_PACKAGES)
+  displayName: Cache NuGet packages
+  
+- task: DotNetCoreCLI@2
+  displayName: Restore custom tools
+  inputs:
+    command: custom
+    custom: 'tool '
+    arguments: 'restore'
+
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    arguments: '--no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: 'test'
+    arguments: '--no-restore --no-build tests'
+
+#- task: DotNetCoreCLI@2
+#  displayName: Database Test
+#  inputs:
+#    command: 'test'
+#    arguments: '--no-restore --no-build integration-tests'
+#  enabled: false
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: |
+      functions/functions.csproj 
+      api/api.csproj
+    arguments: '--no-build --no-restore -o $(Build.ArtifactStagingDirectory)'
+
+#- task: DotNetCoreCLI@2
+#  displayName: Create SQL Scripts
+#  inputs:
+#    command: custom
+#    custom: 'ef '
+#    arguments: migrations script --output $(Build.ArtifactStagingDirectory)/migration.sql --idempotent --project ./migrations --no-build
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifacts
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
