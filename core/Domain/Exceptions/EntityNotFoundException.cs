@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace core.Domain.Exceptions
+namespace core.Domain.Exceptions;
+
+public class EntityNotFoundException : Exception
 {
-    public class EntityNotFoundException : Exception
-    {
-        public EntityNotFoundException(string message) : base(message) { }
-    }
+    public EntityNotFoundException(string message) : base(message) { }
 }

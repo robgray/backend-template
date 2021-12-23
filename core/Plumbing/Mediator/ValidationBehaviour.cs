@@ -5,37 +5,36 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Plumbing.Mediator
+namespace core.Plumbing.Mediator;
+
+public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
-    public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    private readonly IServiceProvider _serviceProvider;
+    public ValidationBehaviour(IServiceProvider serviceProvider)
     {
-        private readonly IServiceProvider _serviceProvider;
-        public ValidationBehaviour(IServiceProvider serviceProvider)
+        _serviceProvider = serviceProvider;
+    }
+
+    public async Task<TResponse> Handle(TRequest request,
+        CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next)
+    {
+        var requestType = request.GetType();
+        var validatorType = typeof(IValidator<>).MakeGenericType(requestType);
+
+        var scope = _serviceProvider.CreateScope();
+        var validator = (IValidator)scope.ServiceProvider.GetService(validatorType);
+        if (validator == null)
         {
-            _serviceProvider = serviceProvider;
+            return await next();
         }
 
-        public async Task<TResponse> Handle(TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<TResponse> next)
+        var result = await validator.ValidateAsync(new ValidationContext<TRequest>(request), cancellationToken);
+        if (result.IsValid)
         {
-            var requestType = request.GetType();
-            var validatorType = typeof(IValidator<>).MakeGenericType(requestType);
-
-            var scope = _serviceProvider.CreateScope();
-            var validator = (IValidator)scope.ServiceProvider.GetService(validatorType);
-            if (validator == null)
-            {
-                return await next();
-            }
-
-            var result = await validator.ValidateAsync(new ValidationContext<TRequest>(request), cancellationToken);
-            if (result.IsValid)
-            {
-                return await next();
-            }
-
-            throw new ValidationException(result.Errors);
+            return await next();
         }
+
+        throw new ValidationException(result.Errors);
     }
 }

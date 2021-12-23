@@ -4,19 +4,18 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace api.Plumbing.Auth
+namespace api.Plumbing.Auth;
+
+public static class AuthStartup
 {
-    public static class AuthStartup
+    public static void AddCustomAuth(this IServiceCollection services)
     {
-        public static void AddCustomAuth(this IServiceCollection services)
-        {
 
-        }
+    }
 
-        public static void ConfigureCustomAuth(this IApplicationBuilder app)
-        {
-            // app.UseAuthentication();
-            // app.UseAuthorization();
-        }
+    public static void ConfigureCustomAuth(this IApplicationBuilder app)
+    {
+        // app.UseAuthentication();
+        // app.UseAuthorization();
     }
 }

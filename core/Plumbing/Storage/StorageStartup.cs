@@ -12,63 +12,62 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
 
-namespace core.Plumbing.Storage
+namespace core.Plumbing.Storage;
+
+public static class StorageStartup
 {
-    public static class StorageStartup
+    public static void AddCustomAzureStorage(this IServiceCollection services)
     {
-        public static void AddCustomAzureStorage(this IServiceCollection services)
-        {
-            services.AddOptions<StorageOptions>()
-                .Configure<IConfiguration>((settings, configuration) =>
-                {
-                    configuration.GetSection(StorageOptions.Key).Bind(settings);
-                })
-                .ValidateDataAnnotations();
-
-            services.AddTransient(provider =>
+        services.AddOptions<StorageOptions>()
+            .Configure<IConfiguration>((settings, configuration) =>
             {
-                var logger = Log.ForContext(typeof(StorageStartup));
+                configuration.GetSection(StorageOptions.Key).Bind(settings);
+            })
+            .ValidateDataAnnotations();
 
-                var keyVaultOptions = provider.GetService<IOptions<KeyVaultOptions>>().Value;
-                var storageOptions = provider.GetService<IOptions<StorageOptions>>().Value;
-                if (storageOptions.UseEmulator) return new BlobServiceClient("UseDevelopmentStorage=true");
+        services.AddTransient(provider =>
+        {
+            var logger = Log.ForContext(typeof(StorageStartup));
 
-                logger.Information("Using managed identity client {ManagedIdentityClientId} connect to key vault",
-                    storageOptions.ManagedIdentityClientId);
-                var cred = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-                {
-                    ManagedIdentityClientId = storageOptions.ManagedIdentityClientId
-                });
+            var keyVaultOptions = provider.GetService<IOptions<KeyVaultOptions>>().Value;
+            var storageOptions = provider.GetService<IOptions<StorageOptions>>().Value;
+            if (storageOptions.UseEmulator) return new BlobServiceClient("UseDevelopmentStorage=true");
 
-                // Only required for client side encryption
-                var options = GetBlobClientOptions(keyVaultOptions, cred);
-
-                return new BlobServiceClient(
-                    new Uri($"https://{storageOptions.StorageAccount}.blob.core.windows.net/"), cred, options);
+            logger.Information("Using managed identity client {ManagedIdentityClientId} connect to key vault",
+                storageOptions.ManagedIdentityClientId);
+            var cred = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                ManagedIdentityClientId = storageOptions.ManagedIdentityClientId
             });
-            services.AddSingleton<IBlobStorageClient, BlobStorageClient>();
-        }
 
-        private static BlobClientOptions GetBlobClientOptions(KeyVaultOptions keyVaultOptions, TokenCredential cred)
+            // Only required for client side encryption
+            var options = GetBlobClientOptions(keyVaultOptions, cred);
+
+            return new BlobServiceClient(
+                new Uri($"https://{storageOptions.StorageAccount}.blob.core.windows.net/"), cred, options);
+        });
+        services.AddSingleton<IBlobStorageClient, BlobStorageClient>();
+    }
+
+    private static BlobClientOptions GetBlobClientOptions(KeyVaultOptions keyVaultOptions, TokenCredential cred)
+    {
+        var kvUri = "https://" + keyVaultOptions.KeyVaultName + ".vault.azure.net/keys/" +
+                    keyVaultOptions.StorageEncryptionKeyName;
+
+        var cryptoClient = new CryptographyClient(new Uri(kvUri), cred);
+        var keyResolver = new KeyResolver(cred);
+        var encryptionOptions = new ClientSideEncryptionOptions(ClientSideEncryptionVersion.V1_0)
         {
-            var kvUri = "https://" + keyVaultOptions.KeyVaultName + ".vault.azure.net/keys/" +
-                        keyVaultOptions.StorageEncryptionKeyName;
-
-            var cryptoClient = new CryptographyClient(new Uri(kvUri), cred);
-            var keyResolver = new KeyResolver(cred);
-            var encryptionOptions = new ClientSideEncryptionOptions(ClientSideEncryptionVersion.V1_0)
-            {
-                KeyEncryptionKey = cryptoClient,
-                KeyResolver = keyResolver,
-                KeyWrapAlgorithm = "RSA-OAEP"
-            };
-            
-            var options = new SpecializedBlobClientOptions
-            {
-                ClientSideEncryption = encryptionOptions
-            };
-            
-            return options;
-        }
+            KeyEncryptionKey = cryptoClient,
+            KeyResolver = keyResolver,
+            KeyWrapAlgorithm = "RSA-OAEP"
+        };
+        
+        var options = new SpecializedBlobClientOptions
+        {
+            ClientSideEncryption = encryptionOptions
+        };
+        
+        return options;
     }
 }

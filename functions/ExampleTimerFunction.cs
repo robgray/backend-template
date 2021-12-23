@@ -1,24 +1,22 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.Functions.Worker;
 using Serilog;
 
-namespace functions
+namespace functions;
+public class ExampleTimerFunction
 {
-    public class ExampleTimerFunction
+    private readonly ILogger _log;
+
+    public ExampleTimerFunction()
     {
-        private readonly ILogger _log;
+        _log = Log.ForContext<ExampleTimerFunction>();
+    }
 
-        public ExampleTimerFunction()
-        {
-            _log = Log.ForContext<ExampleTimerFunction>();
-        }
-
-        [FunctionName(nameof(ExampleTimerFunction))]
-        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
-        {
-            await Task.CompletedTask;
-            
-            _log.Information("Finished sample timer function");
-        }
+    [Function(nameof(ExampleTimerFunction))]
+    public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
+    {
+        await Task.CompletedTask;
+        
+        _log.Information("Finished sample timer function");
     }
 }

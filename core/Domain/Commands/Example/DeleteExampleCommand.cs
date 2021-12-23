@@ -4,22 +4,21 @@ using System.Threading.Tasks;
 using core.Domain.Exceptions;
 using MediatR;
 
-namespace core.Domain.Commands.Example
+namespace core.Domain.Commands.Example;
+
+public class DeleteExampleCommand : ICommand
 {
-    public class DeleteExampleCommand : ICommand
-    {
-        public int ExampleId { get; set; }
-    }
+    public int ExampleId { get; set; }
+}
 
-    public class DeleteExampleCommandHandler : ICommandHandler<DeleteExampleCommand>
+public class DeleteExampleCommandHandler : ICommandHandler<DeleteExampleCommand>
+{
+    public async Task<Unit> Handle(DeleteExampleCommand command, CancellationToken cancellationToken)
     {
-        public async Task<Unit> Handle(DeleteExampleCommand command, CancellationToken cancellationToken)
-        {
-            await Task.CompletedTask;
+        await Task.CompletedTask;
 
-            // TODO: Actually delete it...
-            
-            return Unit.Value;
-        }
+        // TODO: Actually delete it...
+        
+        return Unit.Value;
     }
 }

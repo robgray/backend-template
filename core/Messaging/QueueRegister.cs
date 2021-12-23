@@ -1,6 +1,5 @@
-﻿namespace core.Messaging
+﻿namespace core.Messaging;
+
+public class QueueRegister
 {
-    public class QueueRegister
-    {
-    }
 }

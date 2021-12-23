@@ -1,12 +1,11 @@
 ﻿using MediatR;
 
-namespace core.Domain.Commands
-{
-    public interface ICommand : IRequest { }
+namespace core.Domain.Commands;
 
-    public interface ICommand<out TResponse> : IRequest<TResponse> { }
+public interface ICommand : IRequest { }
 
-    public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand> where TCommand : IRequest<Unit> { }
+public interface ICommand<out TResponse> : IRequest<TResponse> { }
 
-    public interface ICommandHandler<in TCommand, TResponse> : IRequestHandler<TCommand, TResponse> where TCommand : IRequest<TResponse> { }
-}
+public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand> where TCommand : IRequest<Unit> { }
+
+public interface ICommandHandler<in TCommand, TResponse> : IRequestHandler<TCommand, TResponse> where TCommand : IRequest<TResponse> { }

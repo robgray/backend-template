@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
 
-namespace tests.Plumbing
+namespace tests.Plumbing;
+
+public static class Approvals
 {
-    public static class Approvals
+    public static void VerifyAsJson(this object input)
     {
-        public static void VerifyAsJson(this object input)
-        {
-            var json = JsonConvert.SerializeObject(input);
-            ApprovalTests.Approvals.VerifyJson(json);
-        }
+        var json = JsonConvert.SerializeObject(input);
+        ApprovalTests.Approvals.VerifyJson(json);
     }
 }

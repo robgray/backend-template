@@ -1,9 +1,7 @@
 ﻿using api.Features.Shared.Models;
 
-namespace api.Features.Example.Models
+namespace api.Features.Example.Models;
+public class ListExamplesRequest : PagedRequest
 {
-    public class ListExamplesRequest : PagedRequest
-    {
-        public string SearchText { get; set; }
-    }
+    public string SearchText { get; set; }
 }

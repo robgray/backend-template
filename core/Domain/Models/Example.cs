@@ -1,8 +1,7 @@
-﻿namespace core.Domain.Models
+﻿namespace core.Domain.Models;
+
+public class Example
 {
-    public class Example
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

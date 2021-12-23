@@ -1,11 +1,10 @@
-﻿namespace core.Plumbing.Storage
-{
-    public class StorageOptions
-    {
-        public static readonly string Key = "AzureStorage";
+﻿namespace core.Plumbing.Storage;
 
-        public bool UseEmulator { get; set; }
-        public string StorageAccount { get; set; }
-        public string ManagedIdentityClientId { get; set; }
-    }
+public class StorageOptions
+{
+    public static readonly string Key = "AzureStorage";
+
+    public bool UseEmulator { get; set; }
+    public string StorageAccount { get; set; }
+    public string ManagedIdentityClientId { get; set; }
 }

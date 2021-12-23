@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Features.Example.Models
+namespace api.Features.Example.Models;
+public class DeleteExampleRequest
 {
-    public class DeleteExampleRequest
-    {
-        [FromRoute]
-        [Required]
-        public int? ExampleId { get; set; }
-    }
+    [FromRoute]
+    [Required]
+    public int? ExampleId { get; set; }
 }

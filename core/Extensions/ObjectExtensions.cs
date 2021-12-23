@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Reflection;
 
-namespace core.Extensions
-{
-    public static class ObjectExtensions
-    {
-        public static bool HasAttribute<T>(this object obj) where T : Attribute => obj.GetType().GetTypeInfo().GetCustomAttribute<T>() != null;
+namespace core.Extensions;
 
-        public static T If<T>(this T obj, bool predicate, Action<T> configureAction)
-        {
-            if (predicate) configureAction(obj);
-            return obj;
-        }
+public static class ObjectExtensions
+{
+    public static bool HasAttribute<T>(this object obj) where T : Attribute => obj.GetType().GetTypeInfo().GetCustomAttribute<T>() != null;
+
+    public static T If<T>(this T obj, bool predicate, Action<T> configureAction)
+    {
+        if (predicate) configureAction(obj);
+        return obj;
     }
 }

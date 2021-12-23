@@ -1,20 +1,19 @@
-﻿namespace core.Domain.Queries.Shared
+﻿namespace core.Domain.Queries.Shared;
+
+public class PagedResults<T>
 {
-    public class PagedResults<T>
+    public PagedResults() { }
+
+    public PagedResults(T[] items, int currentPage, int totalPages, int totalItems)
     {
-        public PagedResults() { }
-
-        public PagedResults(T[] items, int currentPage, int totalPages, int totalItems)
-        {
-            Items = items;
-            CurrentPage = currentPage;
-            TotalPages = totalPages;
-            TotalItems = totalItems;
-        }
-
-        public T[] Items { get; set; }
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-        public int TotalItems { get; set; }
+        Items = items;
+        CurrentPage = currentPage;
+        TotalPages = totalPages;
+        TotalItems = totalItems;
     }
+
+    public T[] Items { get; set; }
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int TotalItems { get; set; }
 }

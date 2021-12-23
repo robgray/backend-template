@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace api.Features.Example.Models
+namespace api.Features.Example.Models;
+public class UpdateExampleRequest
 {
-    public class UpdateExampleRequest
-    {
-        [Required]
-        public string Name { get; set; }
-    }
+    [Required]
+    public string Name { get; set; }
 }

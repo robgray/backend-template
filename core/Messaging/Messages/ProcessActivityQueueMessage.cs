@@ -1,7 +1,5 @@
-﻿namespace core.Messaging.Messages
+﻿namespace core.Messaging.Messages;
+public class ProcessActivityQueueMessage
 {
-    public class ProcessActivityQueueMessage
-    {
-        public int ActivityId { get; set; }
-    }
+    public int ActivityId { get; set; }
 }
