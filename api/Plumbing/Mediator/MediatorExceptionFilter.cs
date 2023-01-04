@@ -1,7 +1,9 @@
-﻿using System;
+﻿namespace Api.Plumbing.Mediator;
+
+using System;
 using System.Linq;
 using System.Net;
-using core.Domain.Exceptions;
+using Core.Domain.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +11,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace api.Plumbing.Mediator;
 public class MediatorExceptionFilter : ExceptionFilterAttribute
 {
     private readonly IWebHostEnvironment _environment;

@@ -1,12 +1,13 @@
+namespace Api;
+
 using System;
 using System.IO;
-using core.Plumbing.Logging;
+using Core.Plumbing.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace api;
 public class Program
 {
     public static int Main(string[] args)

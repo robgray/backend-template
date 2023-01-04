@@ -1,8 +1,9 @@
-﻿using System.Threading;
+﻿namespace Core.Domain.Commands.Example;
+
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 
-namespace core.Domain.Commands.Example;
 public class CreateExampleCommand : ICommand<Models.Example>
 {
     public string Name { get; set; }

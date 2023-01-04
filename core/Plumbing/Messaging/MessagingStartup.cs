@@ -1,8 +1,8 @@
-﻿using core.Messaging;
+﻿namespace Core.Plumbing.Messaging;
+
+using Core.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace core.Plumbing.Messaging;
 
 public static class MessagingStartup
 {

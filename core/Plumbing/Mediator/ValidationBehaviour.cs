@@ -1,23 +1,22 @@
-﻿using System;
+﻿namespace Core.Plumbing.Mediator;
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Plumbing.Mediator;
-
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : MediatR.IRequest<TResponse>
 {
     private readonly IServiceProvider _serviceProvider;
     public ValidationBehaviour(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
-
-    public async Task<TResponse> Handle(TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+    
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var requestType = request.GetType();
         var validatorType = typeof(IValidator<>).MakeGenericType(requestType);

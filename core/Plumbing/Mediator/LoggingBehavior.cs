@@ -1,16 +1,17 @@
-﻿using System;
+﻿namespace Core.Plumbing.Mediator;
+
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using core.Extensions;
+using Extensions;
 using FluentValidation;
 using MediatR;
 using Serilog;
 using Serilog.Events;
 
-namespace core.Plumbing.Mediator;
-
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
     private const string SuccessMessageTemplate =
         "{HandlerName:l} completed in {TimedOperationElapsed} ({TimedOperationElapsedInMs} ms)";
@@ -20,8 +21,8 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
     private readonly ILogger _logger;
     public LoggingBehavior() => _logger = Log.ForContext(GetType());
-
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var declaringTypeOrObjectType = request.GetType().DeclaringType ?? request.GetType();
         var handlerName = declaringTypeOrObjectType.FullName;

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿namespace Core.Extensions;
 
-namespace core.Extensions;
+using System;
+using System.Reflection;
 
 public static class ObjectExtensions
 {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace Core.Messaging.Messages;
 
-namespace core.Messaging.Messages;
+using System;
 
 public class EncodeVideoQueueMessage
 {

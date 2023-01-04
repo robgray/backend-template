@@ -1,23 +1,23 @@
+namespace Api;
+
 using System.Text.Json.Serialization;
-using api.Plumbing.Auth;
-using api.Plumbing.Cors;
-using api.Plumbing.Mediator;
-using api.Plumbing.Swagger;
-using api.Plumbing.Validation;
-using core.Plumbing.Automapper;
-using core.Plumbing.KeyVault;
-using core.Plumbing.Mediator;
-using core.Plumbing.Messaging;
-using core.Plumbing.Storage;
+using Core.Plumbing.Automapper;
+using Core.Plumbing.KeyVault;
+using Core.Plumbing.Mediator;
+using Core.Plumbing.Messaging;
+using Core.Plumbing.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
+using Plumbing.Auth;
+using Plumbing.Cors;
+using Plumbing.Mediator;
+using Plumbing.Swagger;
+using Plumbing.Validation;
 using Serilog;
-
-namespace api;
 
 public class Startup
 {
@@ -66,7 +66,7 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
 
-            app.ConfigureCustomSwagger();
+            app.UseCustomSwagger();
         }
 
         app.ConfigureCustomCors();

@@ -1,8 +1,8 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using core.Domain.Exceptions;
+﻿namespace Core.Domain.Queries.Example;
 
-namespace core.Domain.Queries.Example;
+using System.Threading;
+using System.Threading.Tasks;
+using Exceptions;
 
 public class GetExampleByIdQuery : IQuery<Models.Example>
 {

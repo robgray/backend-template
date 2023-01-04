@@ -1,4 +1,4 @@
-﻿namespace core.Messaging;
+﻿namespace Core.Messaging;
 
 public class QueueRegister
 {

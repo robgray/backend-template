@@ -1,4 +1,4 @@
-﻿namespace core.Domain.Queries.Shared;
+﻿namespace Core.Domain.Queries.Shared;
 
 public class PagedResults<T>
 {

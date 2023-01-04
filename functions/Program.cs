@@ -1,14 +1,14 @@
-using core.Plumbing.KeyVault;
-using core.Plumbing.Logging;
-using core.Plumbing.Mediator;
-using core.Plumbing.Storage;
+namespace Functions;
+
+using Core.Plumbing.KeyVault;
+using Core.Plumbing.Logging;
+using Core.Plumbing.Mediator;
+using Core.Plumbing.Storage;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-
-namespace functions;
 
 [UsedImplicitly]
 public class Program

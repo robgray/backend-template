@@ -1,10 +1,11 @@
-﻿using System;
+﻿namespace Core.Plumbing.Logging;
+
+using System;
 using System.Collections.Generic;
 using Microsoft.ApplicationInsights.Channel;
 using Serilog.Events;
-using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using Serilog.Sinks.ApplicationInsights.TelemetryConverters;
 
-namespace core.Plumbing.Logging;
 public class OperationTelemetryConverter : TraceTelemetryConverter
 {
     public override IEnumerable<ITelemetry> Convert(LogEvent logEvent, IFormatProvider formatProvider)

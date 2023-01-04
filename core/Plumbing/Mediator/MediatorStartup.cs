@@ -1,8 +1,8 @@
-﻿using core.Domain.Commands;
+﻿namespace Core.Plumbing.Mediator;
+
+using Domain.Commands;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace core.Plumbing.Mediator;
 
 public static class MediatorStartup
 {

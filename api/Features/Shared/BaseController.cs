@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿namespace Api.Features.Shared;
+
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using core.Extensions;
+using Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Features.Shared;
 public class BaseController : ControllerBase
 {
     protected readonly IMapper Mapper;

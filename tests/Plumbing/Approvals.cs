@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿namespace Tests.Plumbing;
 
-namespace tests.Plumbing;
+using Newtonsoft.Json;
 
 public static class Approvals
 {

@@ -1,4 +1,4 @@
-namespace api.Plumbing.Auth;
+namespace Api.Plumbing.Auth;
 
 public class AuthPolicies
 {

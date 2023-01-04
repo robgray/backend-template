@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿namespace Api.Plumbing.Cors;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace api.Plumbing.Cors;
 
 public static class CorsStartup
 {

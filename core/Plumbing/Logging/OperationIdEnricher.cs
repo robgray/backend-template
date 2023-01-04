@@ -1,11 +1,11 @@
-﻿using System;
+﻿namespace Core.Plumbing.Logging;
+
+using System;
 using System.Diagnostics;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
-
-namespace core.Plumbing.Logging;
 
 public class OperationIdEnricher : ILogEventEnricher
 {

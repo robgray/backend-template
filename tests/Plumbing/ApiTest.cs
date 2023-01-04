@@ -1,28 +1,21 @@
-﻿using System;
-using System.IO;
-using api;
-using core.Domain.Services;
+﻿namespace Tests.Plumbing;
+
+using System;
+using Api;
 using Flurl.Http;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
-using NSubstitute;
 using Serilog;
 using Serilog.Core;
-using tests.Features;
-using TestStack.Dossier;
-using TestStack.Dossier.Suppliers;
 using Xunit.Abstractions;
-
-namespace tests.Plumbing;
 
 public class ApiTest : IDisposable
 {

@@ -1,4 +1,4 @@
-﻿namespace core.Domain.Models;
+﻿namespace Core.Domain.Models;
 
 public class Example
 {

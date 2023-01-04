@@ -1,4 +1,4 @@
-﻿namespace core.Plumbing.Storage;
+﻿namespace Core.Plumbing.Storage;
 
 public class StorageOptions
 {

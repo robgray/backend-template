@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿namespace Functions;
+
+using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Serilog;
 
-namespace functions;
 public class ExampleTimerFunction
 {
     private readonly ILogger _log;

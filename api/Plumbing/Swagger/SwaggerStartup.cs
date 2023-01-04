@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿namespace Api.Plumbing.Swagger;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-
-namespace api.Plumbing.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 public static class SwaggerStartup
 {
@@ -33,9 +34,16 @@ public static class SwaggerStartup
         });
     }
 
-    public static void ConfigureCustomSwagger(this IApplicationBuilder app)
+    public static void UseCustomSwagger(this IApplicationBuilder app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1");
+            c.RoutePrefix = string.Empty;
+            c.DocExpansion(DocExpansion.List);
+            c.DefaultModelExpandDepth(3);
+            c.DefaultModelsExpandDepth(0);
+        });
     }
 }

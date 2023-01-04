@@ -1,10 +1,11 @@
-﻿using System.Threading;
+﻿namespace Core.Domain.Queries.Example;
+
+using System.Threading;
 using System.Threading.Tasks;
-using core.Domain.Queries.Shared;
+using Models;
+using Shared;
 
-namespace core.Domain.Queries.Example;
-
-public class ListExamplesQuery : IQuery<PagedResults<Models.Example>>
+public class ListExamplesQuery : IQuery<PagedResults<Example>>
 {
     public string SearchText { get; set; }
     public int PageNumber { get; set; }

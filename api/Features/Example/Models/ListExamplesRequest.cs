@@ -1,6 +1,7 @@
-﻿using api.Features.Shared.Models;
+﻿namespace Api.Features.Example.Models;
 
-namespace api.Features.Example.Models;
+using Shared.Models;
+
 public class ListExamplesRequest : PagedRequest
 {
     public string SearchText { get; set; }

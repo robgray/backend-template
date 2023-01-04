@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿namespace Core.Extensions;
+
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-
-namespace core.Extensions;
 
 public static class StringExtensions
 {

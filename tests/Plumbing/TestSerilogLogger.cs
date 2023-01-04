@@ -1,8 +1,8 @@
-﻿using Serilog;
+﻿namespace Tests.Plumbing;
+
+using Serilog;
 using Serilog.Core;
 using Xunit.Abstractions;
-
-namespace tests.Plumbing;
 
 public static class TestSerilogLogger
 {

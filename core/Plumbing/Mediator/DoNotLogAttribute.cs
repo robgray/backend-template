@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace Core.Plumbing.Mediator;
 
-namespace core.Plumbing.Mediator;
+using System;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class DoNotLogAttribute : Attribute { }

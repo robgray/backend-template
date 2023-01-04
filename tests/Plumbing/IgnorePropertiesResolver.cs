@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿namespace Tests.Plumbing;
+
+using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-
-namespace tests.Plumbing;
 
 public class IgnorePropertiesResolver : DefaultContractResolver
 {

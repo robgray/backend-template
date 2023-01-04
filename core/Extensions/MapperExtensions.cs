@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿namespace Core.Extensions;
 
-namespace core.Extensions;
+using System.Linq;
+using AutoMapper;
 
 public static class MapperExtensions
 {

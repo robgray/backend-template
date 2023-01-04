@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿namespace Core.Domain.Queries;
 
-namespace core.Domain.Queries;
+using MediatR;
 
 public interface IQuery<out TResult> : IRequest<TResult> { }
 

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Core.Domain.Services;
 
-namespace core.Domain.Services;
+using System.Threading.Tasks;
 
 public interface IBlobStorageClient
 {

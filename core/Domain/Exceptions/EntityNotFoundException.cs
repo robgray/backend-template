@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace Core.Domain.Exceptions;
 
-namespace core.Domain.Exceptions;
+using System;
 
 public class EntityNotFoundException : Exception
 {

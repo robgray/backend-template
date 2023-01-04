@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
+﻿namespace Tests.Plumbing;
 
-namespace tests.Plumbing;
+using System;
+using System.Text;
 
 public class Constants
 {

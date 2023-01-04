@@ -1,18 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Api.Features.Example;
+
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using api.Features.Example.Models;
-using api.Features.Shared;
-using api.Plumbing.Auth;
 using AutoMapper;
-using core.Domain.Commands.Example;
-using core.Domain.Queries.Example;
-using core.Domain.Queries.Shared;
+using Core.Domain.Commands.Example;
+using Core.Domain.Queries.Example;
+using Core.Domain.Queries.Shared;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-namespace api.Features.Example;
+using Models;
+using Shared;
 
 [ApiController]
 [Route("api/[controller]")]

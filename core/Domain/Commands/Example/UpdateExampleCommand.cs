@@ -1,9 +1,7 @@
-﻿using System.Linq;
+﻿namespace Core.Domain.Commands.Example;
+
 using System.Threading;
 using System.Threading.Tasks;
-using core.Domain.Exceptions;
-
-namespace core.Domain.Commands.Example;
 
 public class UpdateExampleCommand : ICommand<Models.Example>
 {

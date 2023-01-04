@@ -1,16 +1,17 @@
-﻿using System;
+﻿namespace Tests.Features.Example;
+
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using api.Features.Example.Models;
-using core.Domain.Queries.Shared;
+using Api.Features.Example.Models;
+using Core.Domain.Models;
+using Core.Domain.Queries.Shared;
 using FluentAssertions;
 using Flurl.Http;
 using Microsoft.AspNetCore.Http;
-using tests.Plumbing;
+using Plumbing;
 using Xunit;
 using Xunit.Abstractions;
-
-namespace tests.Features.Example;
 
 public class ExampleControllerTests : ApiTest
 {
@@ -81,7 +82,7 @@ public class ExampleControllerTests : ApiTest
     [Fact]
     public async Task Update()
     {
-        var example = new core.Domain.Models.Example { Name = "Old Name" };
+        var example = new Example { Name = "Old Name" };
 
         var updateCommand = new UpdateExampleRequest
         {

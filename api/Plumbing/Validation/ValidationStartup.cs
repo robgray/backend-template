@@ -1,8 +1,8 @@
-﻿using core.Domain.Commands.Example;
+﻿namespace Api.Plumbing.Validation;
+
+using Core.Domain.Commands.Example;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace api.Plumbing.Validation;
 
 public static class ValidationStartup
 {

@@ -1,9 +1,9 @@
-﻿using System.Text;
+﻿namespace Core.Messaging;
+
+using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Newtonsoft.Json;
-
-namespace core.Messaging;
 
 public interface IQueueSender
 {

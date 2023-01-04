@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Core.Plumbing.KeyVault;
 
-namespace core.Plumbing.KeyVault;
+using System.ComponentModel.DataAnnotations;
 
 public class KeyVaultOptions
 {

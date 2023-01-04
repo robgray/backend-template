@@ -1,9 +1,11 @@
-﻿using AutoMapper;
-using core.Domain.Commands.Example;
-using core.Domain.Queries.Example;
-using core.Domain.Queries.Shared;
+﻿namespace Api.Features.Example.Models;
 
-namespace api.Features.Example.Models;
+using AutoMapper;
+using Core.Domain.Commands.Example;
+using Core.Domain.Models;
+using Core.Domain.Queries.Example;
+using Core.Domain.Queries.Shared;
+
 public class ExampleMappingProfile : Profile
 {
     public ExampleMappingProfile()
@@ -16,17 +18,17 @@ public class ExampleMappingProfile : Profile
         CreateMap<CreateExampleRequest, CreateExampleCommand>();
 
         CreateMap<int, UpdateExampleCommand>()
-            .ForMember(d => d.ExampleId, o => o.MapFrom(s => s))
-            .ForAllOtherMembers(d => d.Ignore());
+            .ForMember(d => d.ExampleId, o => o.MapFrom(s => s));
+        
         CreateMap<UpdateExampleRequest, UpdateExampleCommand>()
             .ForMember(d => d.ExampleId, o => o.Ignore());
 
         CreateMap<int, DeleteExampleCommand>()
             .ForMember(d => d.ExampleId, o => o.MapFrom(s => s));
 
-        CreateMap<core.Domain.Models.Example, ExampleModel>()
+        CreateMap<Example, ExampleModel>()
             .ForMember(d => d.ExampleId, o => o.MapFrom(s => s.Id));
 
-        CreateMap<PagedResults<core.Domain.Models.Example>, PagedResults<ExampleModel>>();
+        CreateMap<PagedResults<Example>, PagedResults<ExampleModel>>();
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Api.Features.Example.Models;
 
-namespace api.Features.Example.Models;
+using System.ComponentModel.DataAnnotations;
+
 public class CreateExampleRequest
 {
     [Required]

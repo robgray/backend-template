@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
-using core.Domain.Models;
-using Microsoft.Extensions.DependencyInjection;
+﻿namespace Core.Plumbing.Automapper;
 
-namespace core.Plumbing.Automapper;
+using System;
+using System.Linq;
+using Domain.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class AutomapperStartup
 {

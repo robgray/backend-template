@@ -1,7 +1,7 @@
+namespace Core.Extensions;
+
 using System.Collections.Generic;
 using System.Linq;
-
-namespace core.Extensions;
 
 public static class EnumerableExtensions
 {

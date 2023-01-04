@@ -1,4 +1,4 @@
-﻿namespace api.Features.Shared.Models;
+﻿namespace Api.Features.Shared.Models;
 public class PagedRequest
 {
     public const int DefaultPageSize = 10;

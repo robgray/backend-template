@@ -1,13 +1,13 @@
-﻿using System;
+﻿namespace Core.Plumbing.Logging;
+
+using System;
 using System.Reflection;
-using core.Extensions;
+using Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-
-namespace core.Plumbing.Logging;
 
 public static class LoggingStartup
 {
@@ -46,7 +46,7 @@ public static class LoggingStartup
             .Enrich.WithProperty("ApplicationName", assemblyName)
             .Enrich.WithProperty("ApplicationVersion", assemblyVersion)
             .Enrich.WithProperty("Environment", environment)
-            .If(isConsoleConfigured, c => c.WriteTo.Console())
+            .If(isConsoleConfigured, c => ConsoleLoggerConfigurationExtensions.Console(c.WriteTo))
             .If(isSeqConfigured,
                 c => c.WriteTo.Seq(
                     seqServerUrl,

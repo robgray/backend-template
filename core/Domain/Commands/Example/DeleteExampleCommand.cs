@@ -1,10 +1,8 @@
-﻿using System.Linq;
+﻿namespace Core.Domain.Commands.Example;
+
 using System.Threading;
 using System.Threading.Tasks;
-using core.Domain.Exceptions;
 using MediatR;
-
-namespace core.Domain.Commands.Example;
 
 public class DeleteExampleCommand : ICommand
 {

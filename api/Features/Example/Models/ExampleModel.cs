@@ -1,4 +1,4 @@
-﻿namespace api.Features.Example.Models;
+﻿namespace Api.Features.Example.Models;
 public class ExampleModel
 {
     public int ExampleId { get; set; }

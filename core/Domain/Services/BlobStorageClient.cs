@@ -1,10 +1,10 @@
-﻿using Azure.Storage.Blobs;
+﻿namespace Core.Domain.Services;
+
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Newtonsoft.Json;
-
-namespace core.Domain.Services;
 
 public class BlobStorageClient : IBlobStorageClient
 {
