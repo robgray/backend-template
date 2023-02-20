@@ -1,7 +1,6 @@
 ﻿namespace Tests.Features.Example;
 
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Api.Features.Example.Models;
 using Core.Domain.Models;
@@ -13,9 +12,12 @@ using Plumbing;
 using Xunit;
 using Xunit.Abstractions;
 
-public class ExampleControllerTests : ApiTest
+public class ExampleControllerTests : ApiFactory<TestStartup>
 {
-    public ExampleControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper) { }
+    public ExampleControllerTests(ITestOutputHelper testOutputHelper)
+        : base(testOutputHelper)
+    {
+    }
 
     [Fact]
     public async Task Create()
@@ -25,7 +27,7 @@ public class ExampleControllerTests : ApiTest
             Name = "Test"
         };
 
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient();
         var responseModel = await client.Request("api/examples")
             .PostJsonAsync(createRequest)
             .ReceiveJson<ExampleModel>();
@@ -43,7 +45,7 @@ public class ExampleControllerTests : ApiTest
     {
         var createRequest = new CreateExampleRequest();
 
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient();
         Func<Task> action = async () => await client.Request("api/examples")
             .PostJsonAsync(createRequest
             )
@@ -60,10 +62,9 @@ public class ExampleControllerTests : ApiTest
             Name = "Bad name"
         };
 
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient();
         Func<Task> action = async () => await client.Request("api/examples")
-            .PostJsonAsync(createRequest
-            )
+            .PostJsonAsync(createRequest)
             .ReceiveJson<ExampleModel>();
 
         (await action.Should().ThrowAsync<FlurlHttpException>())
@@ -73,8 +74,9 @@ public class ExampleControllerTests : ApiTest
     [Fact]
     public async Task Delete()
     {
-        var client = CreateClient();
-        var responseModel = await client.Request("api/examples/1").SendJsonAsync(HttpMethod.Delete, new DeleteExampleRequest());
+        var client = CreateUnauthenticatedClient();
+        var responseModel = await client.Request("api/examples/1")
+            .DeleteAsync();
 
         responseModel.StatusCode.Should().Be(StatusCodes.Status204NoContent);
     }
@@ -89,7 +91,7 @@ public class ExampleControllerTests : ApiTest
             Name = "Test"
         };
 
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient();
         var responseModel = await client.Request($"api/examples/{example.Id}")
             .PutJsonAsync(updateCommand)
             .ReceiveJson<ExampleModel>();
@@ -108,7 +110,7 @@ public class ExampleControllerTests : ApiTest
         var listRequest = new ListExamplesRequest
         { PageSize = 10, PageNumber = 1, SearchText = "Na" };
 
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient(); 
         var responseModel = await client.Request("api/examples")
                                 .SetQueryParams(listRequest)
                                 .GetJsonAsync<PagedResults<ExampleModel>>();
@@ -126,12 +128,12 @@ public class ExampleControllerTests : ApiTest
     [Fact]
     public async Task Get()
     {
-        var client = CreateClient();
+        var client = CreateUnauthenticatedClient();
         var responseModel = await client.Request($"api/examples/1")
             .GetJsonAsync<ExampleModel>();
 
         responseModel.Should().BeEquivalentTo(
-            new
+            new 
             {
                 ExampleId = 1
             });

@@ -18,7 +18,7 @@ public class GetExampleByIdQueryHandler : IQueryHandler<GetExampleByIdQuery, Mod
         // TODO: Actually get the item 
         var example = new Models.Example { Id = 1, Name = "Name" };
 
-        if (example == null) throw new EntityNotFoundException($"Example with id {request.Id} not found");
+        if (example is null) throw new EntityNotFoundException($"Example with id {request.Id} not found");
 
         return example;
     }

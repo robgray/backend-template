@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-public static class Approvals
+public static class  Approvals
 {
     public static void VerifyAsJson(this object input)
     {

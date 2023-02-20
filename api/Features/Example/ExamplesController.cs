@@ -2,6 +2,8 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Api.Features.Example.Models;
+using Api.Features.Shared;
 using AutoMapper;
 using Core.Domain.Commands.Example;
 using Core.Domain.Queries.Example;
@@ -9,8 +11,6 @@ using Core.Domain.Queries.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
-using Shared;
 
 [ApiController]
 [Route("api/[controller]")]

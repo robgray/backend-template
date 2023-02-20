@@ -6,8 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class ValidationStartup
 {
-    public static void AddCustomValidation(this IMvcBuilder mvcBuilder)
+    public static IMvcBuilder AddCustomValidation(this IMvcBuilder mvcBuilder)
     {
         mvcBuilder.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCommandValidator>());
+
+        return mvcBuilder;
     }
 }

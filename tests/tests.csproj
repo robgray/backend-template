@@ -9,12 +9,15 @@
 
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="5.7.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="FluentAssertions" Version="6.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.12" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="nsubstitute" Version="4.2.2" />
     <PackageReference Include="Serilog.Sinks.XUnit" Version="2.0.4" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
     <PackageReference Include="TestStack.Dossier" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -44,4 +47,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Plumbing\JwtBearerPostConfigureOptions.cs">
+      <DependentUpon>IgnorePropertiesResolver.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
 </Project>

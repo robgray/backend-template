@@ -1,70 +1,54 @@
-namespace Api;
+﻿namespace Tests.Plumbing;
 
+using System.Reflection;
+using Api;
+using Api.Plumbing.Auth;
 using Api.Plumbing.Controllers;
+using Api.Plumbing.Cors;
 using Core.Plumbing.Automapper;
-using Core.Plumbing.KeyVault;
 using Core.Plumbing.Mediator;
-using Core.Plumbing.Messaging;
-using Core.Plumbing.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Internal;
-using Plumbing.Auth;
-using Plumbing.Cors;
-using Plumbing.Swagger;
 using Serilog;
 
-public class Startup
+public class TestStartup
 {
-    public Startup(IConfiguration configuration)
+    public TestStartup(
+        IConfiguration configuration,
+        IWebHostEnvironment env)
     {
         Configuration = configuration;
+        Env = env;
     }
-
+    
     public IConfiguration Configuration { get; }
 
+    public IWebHostEnvironment Env { get; }
+    
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddLogging();
-        services.AddApplicationInsightsTelemetry();
-        
         services.AddCustomCors(Configuration);
-
-        services.AddCustomControllers();
-
-        services.AddCustomSwagger();
-
-        services.AddCustomAuth();
-
         services.AddHealthChecks();
 
+        // Note: this is necessary because AddControllers only adds from the current Assembly
+        // i.e. this testing Assembly. We need to add controllers from the actual Api assembly.
+        var assembly = typeof(Program).GetTypeInfo().Assembly;
+        var part = new AssemblyPart(assembly);
+        services.AddCustomControllers(part);
+        
         services.AddCustomMediator();
-
+        
         services.AddCustomAutoMapper(typeof(Startup));
-
-        services.AddCustomMessaging();
-
-        services.AddSingleton<ISystemClock, SystemClock>();
-
-        services.AddCustomAzureStorage();
-
-        services.AddCustomKeyVault();
     }
 
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseSerilogRequestLogging();
-
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-
-            app.UseCustomSwagger();
-        }
-
+        
         app.UseHealthChecks("/health");
         
         app.ConfigureCustomCors();
