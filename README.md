@@ -3,7 +3,7 @@ This project is a template for the backend services of a web based application.
 
 ## Required Tools
 
-- Visual Studio with .NET 5.0 SDK
+- Visual Studio / Rider with .NET 6.0 SDK
 - Make use of docker, for the following (see docker-compose)
   - [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite) (or an Azure storage account)
   - [Seq](https://getseq.net) (optional, but super handy)
