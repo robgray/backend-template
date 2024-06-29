@@ -3,22 +3,25 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-public class UpdateExampleCommand : ICommand<Models.Example>
+public static class UpdateExample
 {
-    public int ExampleId { get; set; }
-    public string Name { get; set; }
-}
-
-public class UpdateExampleCommandHandler : ICommandHandler<UpdateExampleCommand, Models.Example>
-{
-    public async Task<Models.Example> Handle(UpdateExampleCommand command, CancellationToken cancellationToken)
+    public class Command : ICommand<Models.Example>
     {
-        await Task.CompletedTask;
+        public int ExampleId { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Handler : ICommandHandler<Command, Models.Example>
+    {
+        public async Task<Models.Example> Handle(Command command, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
         
-        // TODO: Actually update it
+            // TODO: Actually update it
         
-        var example = new Models.Example { Id = 1, Name = command.Name };
+            var example = new Models.Example { Id = 1, Name = command.Name };
         
-        return example;
+            return example;
+        }
     }
 }

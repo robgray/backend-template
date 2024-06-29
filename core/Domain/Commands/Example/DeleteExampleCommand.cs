@@ -4,19 +4,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
-public class DeleteExampleCommand : ICommand
+public static class DeleteExample
 {
-    public int ExampleId { get; set; }
-}
-
-public class DeleteExampleCommandHandler : ICommandHandler<DeleteExampleCommand>
-{
-    public async Task<Unit> Handle(DeleteExampleCommand command, CancellationToken cancellationToken)
+    public class Command : ICommand
     {
-        await Task.CompletedTask;
+        public int ExampleId { get; set; }
+    }
 
-        // TODO: Actually delete it...
-        
-        return Unit.Value;
+    public class Handler : ICommandHandler<Command>
+    {
+        public async Task Handle(Command command, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
+
+            // TODO: Actually delete it...
+        }
     }
 }
+

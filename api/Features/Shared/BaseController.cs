@@ -7,39 +7,29 @@ using Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-public class BaseController : ControllerBase
+public class BaseController(ISender sender, IMapper mapper) : ControllerBase
 {
-    protected readonly IMapper Mapper;
-    protected readonly IMediator Mediator;
-
-    public BaseController(IMediator mediator, IMapper mapper)
+    protected async Task<TMappedResult> ExecuteQuery<TCommand, TMappedResult>(params object[] models) where TCommand : new()
     {
-        Mediator = mediator;
-        Mapper = mapper;
+        return await ExecuteMediatorRequest<TCommand, TMappedResult>(models);
     }
 
-    protected async Task<IActionResult> ExecuteQuery<TCommand, TMappedResult>(params object[] models) where TCommand : new()
+    protected async Task ExecuteCommand<TCommand>(params object[] models)
     {
-        return Ok(await ExecuteMediatorRequest<TCommand, TMappedResult>(models));
+        var command = MapperExtensions.Map<TCommand>(mapper, models);
+        await sender.Send(command);
     }
 
-    protected async Task<IActionResult> ExecuteCommand<TCommand>(params object[] models)
+    protected async Task<TMappedResult> ExecuteCommand<TCommand, TMappedResult>(params object[] models) where TCommand : new()
     {
-        var command = MapperExtensions.Map<TCommand>(Mapper, models);
-        await Mediator.Send(command);
-        return NoContent();
-    }
-
-    protected async Task<IActionResult> ExecuteCommand<TCommand, TMappedResult>(params object[] models) where TCommand : new()
-    {
-        return Ok(await ExecuteMediatorRequest<TCommand, TMappedResult>(models));
+        return await ExecuteMediatorRequest<TCommand, TMappedResult>(models);
     }
 
     private async Task<TMappedResult> ExecuteMediatorRequest<TRequest, TMappedResult>(params object[] models) where TRequest : new()
     {
-        var command = models != null && models.Any() ? MapperExtensions.Map<TRequest>(Mapper, models) : new TRequest();
-        var result = await Mediator.Send(command);
-        var mappedResult = MapperExtensions.Map<TMappedResult>(Mapper, result);
+        var command = models != null && models.Any() ? MapperExtensions.Map<TRequest>(mapper, models) : new TRequest();
+        var result = await sender.Send(command);
+        var mappedResult = MapperExtensions.Map<TMappedResult>(mapper, result);
 
         return mappedResult;
     }

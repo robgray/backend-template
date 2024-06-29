@@ -1,42 +1,40 @@
+using Core.Infrastructure.Logging;
+
 namespace Api;
 
 using System;
-using System.IO;
-using Core.Plumbing.Logging;
+using System.Globalization;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 
 public class Program
 {
-    public static int Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .AddJsonFile("appsettings.local.json", optional: true)
-            .AddJsonFile("appsettings.development.json", optional: true)
-            .AddEnvironmentVariables()
-            .AddCommandLine(args)
-            .Build();
 
         Log.Logger = new LoggerConfiguration()
-            .BuildLoggerFromConfiguration(configuration, typeof(Startup));
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .CreateBootstrapLogger(); // <- This means it is temp and get reconfigured/replaced by the host.
 
         try
         {
+            /* set the default culture */
+            var defaultCulture = new CultureInfo("en-AU");
+            CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+            
             Log.Information("Starting API...");
 
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                })
-                .UseSerilog()
-                .Build()
-                .Run();
-
+            var host = CreateHostBuilder(args).Build();
+            
+            await host.RunAsync();
             return 0;
         }
         catch (Exception ex)
@@ -46,7 +44,28 @@ public class Program
         }
         finally
         {
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
         }
     }
+
+    private static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host
+            .CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder
+                    .ConfigureKestrel(opt => opt.AddServerHeader = false)
+                    .ConfigureAppConfiguration(builder => builder.AddUserSecrets<Program>())
+                    .UseStartup<Startup>();
+            })
+            .ConfigureLogging(logging => logging.ClearProviders())
+            .UseSerilog((context, services, configuration) =>
+                configuration
+                  .ReadFrom.Configuration(context.Configuration)
+                  .ReadFrom.Services(services)
+                  .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                  .Enrich.FromLogContext()
+                  .Enrich.WithMachineName()
+                  .Enrich.WithOperationId()
+                  .WriteTo.Console());
 }

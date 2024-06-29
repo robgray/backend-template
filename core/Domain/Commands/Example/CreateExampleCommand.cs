@@ -4,29 +4,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 
-public class CreateExampleCommand : ICommand<Models.Example>
+public static class CreateExample
 {
-    public string Name { get; set; }
-}
-
-public class CreateCommandValidator : AbstractValidator<CreateExampleCommand>
-{
-    public CreateCommandValidator()
+    public class Command : ICommand<Models.Example>
     {
-        RuleFor(x => x.Name).Must(name => name != "Bad name");
+        public string Name { get; set; }
     }
-}
 
-public class CreateExampleCommandHandler : ICommandHandler<CreateExampleCommand, Models.Example>
-{
-    public async Task<Models.Example> Handle(CreateExampleCommand command, CancellationToken cancellationToken)
+    public class Validator : AbstractValidator<Command>
     {
-        await Task.CompletedTask;
-        
-        var example = new Models.Example { Id = 1, Name = command.Name };
-        
-        // TODO: Actually save it somewhere
+        public Validator()
+        {
+            RuleFor(x => x.Name).NotEmpty();
+        }
+    }
 
-        return example;
+    public class Handler : ICommandHandler<Command, Models.Example>
+    {
+        public async Task<Models.Example> Handle(Command command, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
+        
+            var example = new Models.Example { Id = 1, Name = command.Name };
+        
+            // TODO: Actually save it somewhere
+
+            return example;
+        }
     }
 }

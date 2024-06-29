@@ -4,22 +4,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Exceptions;
 
-public class GetExampleByIdQuery : IQuery<Models.Example>
+public static class GetExampleById
 {
-    public int Id { get; set; }
-}
-
-public class GetExampleByIdQueryHandler : IQueryHandler<GetExampleByIdQuery, Models.Example>
-{
-    public async Task<Models.Example> Handle(GetExampleByIdQuery request, CancellationToken cancellationToken)
+    public class Query : IQuery<Models.Example>
     {
-        await Task.CompletedTask;
+        public int Id { get; set; }
+    }
 
-        // TODO: Actually get the item 
-        var example = new Models.Example { Id = 1, Name = "Name" };
+    public class Handler : IQueryHandler<Query, Models.Example>
+    {
+        public async Task<Models.Example> Handle(Query query, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
 
-        if (example is null) throw new EntityNotFoundException($"Example with id {request.Id} not found");
+            // TODO: Actually get the item 
+            var example = new Models.Example { Id = 1, Name = "Name" };
 
-        return example;
+            if (example is null) throw new EntityNotFoundException($"Example with id {query.Id} not found");
+
+            return example;
+        }
     }
 }

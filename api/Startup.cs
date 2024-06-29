@@ -1,39 +1,47 @@
+using Api.Infrastructure.Auth;
+using Api.Infrastructure.Controllers;
+using Api.Infrastructure.Cors;
+using Api.Infrastructure.Swagger;
+using Api.Infrastructure.Validation;
+using Core.Infrastructure.Automapper;
+using Core.Infrastructure.KeyVault;
+using Core.Infrastructure.Mediator;
+using Core.Infrastructure.Messaging;
+using Core.Infrastructure.Storage;
+
 namespace Api;
 
-using Api.Plumbing.Controllers;
-using Core.Plumbing.Automapper;
-using Core.Plumbing.KeyVault;
-using Core.Plumbing.Mediator;
-using Core.Plumbing.Messaging;
-using Core.Plumbing.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
-using Plumbing.Auth;
-using Plumbing.Cors;
-using Plumbing.Swagger;
 using Serilog;
 
 public class Startup
 {
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
         Configuration = configuration;
+        Env = env;
     }
 
     public IConfiguration Configuration { get; }
+    
+    public IWebHostEnvironment Env { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddLogging();
+        
         services.AddApplicationInsightsTelemetry();
         
         services.AddCustomCors(Configuration);
 
         services.AddCustomControllers();
+
+        services.AddCustomValidation();
 
         services.AddCustomSwagger();
 

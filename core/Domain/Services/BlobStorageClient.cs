@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 public class BlobStorageClient : IBlobStorageClient
 {
-    private readonly BlobServiceClient _blobServiceClient;
+    private readonly BlobServiceClient blobServiceClient;
 
     public BlobStorageClient(BlobServiceClient blobServiceClient)
     {
-        _blobServiceClient = blobServiceClient;
+        this.blobServiceClient = blobServiceClient;
     }
 
     public async Task UploadJson(string blobName, string containerName, string serializedData)
@@ -64,7 +64,7 @@ public class BlobStorageClient : IBlobStorageClient
 
     private async Task<BlobClient> GetBlobClient(string containerName, string blobName)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
         await containerClient.CreateIfNotExistsAsync();
         return containerClient.GetBlobClient(blobName);
     }
