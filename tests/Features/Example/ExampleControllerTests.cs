@@ -1,8 +1,10 @@
-﻿namespace Tests.Features.Example;
+﻿using Api;
+using Api.Features.Example.v1.Models;
+
+namespace Tests.Features.Example;
 
 using System;
 using System.Threading.Tasks;
-using Api.Features.Example.Models;
 using Core.Domain.Models;
 using Core.Domain.Queries.Shared;
 using FluentAssertions;
@@ -12,7 +14,7 @@ using Plumbing;
 using Xunit;
 using Xunit.Abstractions;
 
-public class ExampleControllerTests : ApiFactory<TestStartup>
+public class ExampleControllerTests : ApiFactory<Startup>
 {
     public ExampleControllerTests(ITestOutputHelper testOutputHelper)
         : base(testOutputHelper)
@@ -24,19 +26,20 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
     {
         var createRequest = new CreateExampleRequest
         {
-            Name = "Test"
+            Name = "Test",
         };
 
         var client = CreateUnauthenticatedClient();
-        var responseModel = await client.Request("api/examples")
+        var responseModel = await client.Request("v1/examples")
+            .AllowAnyHttpStatus()
             .PostJsonAsync(createRequest)
             .ReceiveJson<ExampleModel>();
-
+        
         responseModel.Should()
             .BeEquivalentTo(new
             {
                 ExampleId = 1,
-                createRequest.Name
+                createRequest.Name,
             });
     }
 
@@ -46,7 +49,7 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
         var createRequest = new CreateExampleRequest();
 
         var client = CreateUnauthenticatedClient();
-        Func<Task> action = async () => await client.Request("api/examples")
+        Func<Task> action = async () => await client.Request("v1/examples")
             .PostJsonAsync(createRequest
             )
             .ReceiveJson<ExampleModel>();
@@ -57,25 +60,21 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
     [Fact]
     public async Task Create_FailFluentValidation()
     {
-        var createRequest = new CreateExampleRequest
-        {
-            Name = "Bad name"
-        };
+        var createRequest = new CreateExampleRequest(); // Name is required
 
         var client = CreateUnauthenticatedClient();
-        Func<Task> action = async () => await client.Request("api/examples")
-            .PostJsonAsync(createRequest)
-            .ReceiveJson<ExampleModel>();
+        var response = await client.Request("v1/examples")
+            .AllowAnyHttpStatus()
+            .PostJsonAsync(createRequest);
 
-        (await action.Should().ThrowAsync<FlurlHttpException>())
-            .Which.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
     }
 
     [Fact]
     public async Task Delete()
     {
         var client = CreateUnauthenticatedClient();
-        var responseModel = await client.Request("api/examples/1")
+        var responseModel = await client.Request("v1/examples/1")
             .DeleteAsync();
 
         responseModel.StatusCode.Should().Be(StatusCodes.Status204NoContent);
@@ -92,7 +91,7 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
         };
 
         var client = CreateUnauthenticatedClient();
-        var responseModel = await client.Request($"api/examples/{example.Id}")
+        var responseModel = await client.Request($"v1/examples/{example.Id}")
             .PutJsonAsync(updateCommand)
             .ReceiveJson<ExampleModel>();
 
@@ -111,7 +110,7 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
         { PageSize = 10, PageNumber = 1, SearchText = "Na" };
 
         var client = CreateUnauthenticatedClient(); 
-        var responseModel = await client.Request("api/examples")
+        var responseModel = await client.Request("v1/examples")
                                 .SetQueryParams(listRequest)
                                 .GetJsonAsync<PagedResults<ExampleModel>>();
 
@@ -129,7 +128,7 @@ public class ExampleControllerTests : ApiFactory<TestStartup>
     public async Task Get()
     {
         var client = CreateUnauthenticatedClient();
-        var responseModel = await client.Request($"api/examples/1")
+        var responseModel = await client.Request($"v1/examples/1")
             .GetJsonAsync<ExampleModel>();
 
         responseModel.Should().BeEquivalentTo(

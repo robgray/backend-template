@@ -4,7 +4,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Autofac.Extensions.DependencyInjection;
 using Flurl.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -110,7 +109,6 @@ public class ApiFactory<TStartup> : WebApplicationFactory<TStartup>
     protected override IHost CreateHost(IHostBuilder builder)
     {
         var newBuilder = Host.CreateDefaultBuilder()
-            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureWebHostDefaults(
                 webBuilder =>
                 {
