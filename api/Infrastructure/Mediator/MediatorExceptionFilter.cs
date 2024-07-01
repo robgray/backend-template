@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using Core.Domain.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace Api.Infrastructure.Mediator;
+
+using Core.Infrastructure.Mediator.Exceptions;
 
 public class MediatorExceptionFilter : ExceptionFilterAttribute
 {

@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Api.Features.Example.v1;
+
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Api.Features.Example.v1.Models;
-using Api.Features.Shared;
+using Models;
+using Shared;
 using AutoMapper;
 using Core.Domain.Commands.Example;
 using Core.Domain.Queries.Example;
@@ -9,8 +11,7 @@ using Core.Domain.Queries.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-namespace Api.Features.Example.v1;
+using Example = Core.Domain.Models.Example;
 
 [ApiController]
 [Route("v1/[controller]")]
@@ -19,28 +20,25 @@ public class ExamplesController(ISender sender, IMapper mapper) : BaseController
     [HttpGet("{exampleId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ExampleModel>> Get([FromRoute] int exampleId) =>
-        Ok(await ExecuteQuery<GetExampleById.Query, ExampleModel>(exampleId));
+        await ExecuteQuery<GetExampleById.Query, Example, ExampleModel>(exampleId);
 
     [HttpGet]
     [ProducesResponseType(typeof(PagedResults<ExampleModel>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResults<ExampleModel>>> List([FromQuery] ListExamplesRequest request) =>
-        Ok(await ExecuteQuery<ListExamples.Query, PagedResults<ExampleModel>>(request));
+        await ExecuteQuery<ListExamples.Query, PagedResults<Example>, PagedResults<ExampleModel>>(request);
 
     [HttpPost]
     [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status200OK)]
     public async Task<ActionResult<ExampleModel>> Create([FromBody] CreateExampleRequest request) =>
-        Ok(await ExecuteCommand<CreateExample.Command, ExampleModel>(request));
+        await ExecuteCommand<CreateExample.Command, Example, ExampleModel>(request);
 
     [HttpPut("{exampleId?}")]
     [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status200OK)]
     public async Task<ActionResult<ExampleModel>> Update([Range(0, int.MaxValue)] int exampleId, UpdateExampleRequest request) =>
-        Ok(await ExecuteCommand<UpdateExample.Command, ExampleModel>(exampleId, request));
+        await ExecuteCommand<UpdateExample.Command, Example, ExampleModel>(exampleId, request);
 
     [HttpDelete("{exampleId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Delete(int exampleId)
-    {
-        await ExecuteCommand<DeleteExample.Command>(exampleId);
-        return NoContent();
-    }
+    public async Task<ActionResult> Delete(int exampleId) =>
+        await ExecuteAsyncCommand<DeleteExample.Command>(exampleId);
 }

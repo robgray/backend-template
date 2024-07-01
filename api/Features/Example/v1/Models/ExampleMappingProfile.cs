@@ -18,10 +18,11 @@ public class ExampleMappingProfile : Profile
 
         CreateMap<int, UpdateExample.Command>()
             .ForMember(d => d.ExampleId, o => o.MapFrom(s => s));
-        
-        CreateMap<UpdateExampleRequest, UpdateExample.Command>()
-            .ForMember(d => d.ExampleId, o => o.Ignore());
 
+        CreateMap<UpdateExampleRequest, UpdateExample.Command>()
+            .ForMember(r => r.ExampleId, o => o.MapFrom(c => c.ExampleId))
+            .ForMember(r => r.Name, o => o.MapFrom(c => c.Name));
+      
         CreateMap<int, DeleteExample.Command>()
             .ForMember(d => d.ExampleId, o => o.MapFrom(s => s));
 
