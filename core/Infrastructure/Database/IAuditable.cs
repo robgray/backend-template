@@ -1,14 +1,14 @@
-﻿namespace Core.Domain.Models;
+﻿namespace Core.Infrastructure.Database;
 
 using System;
-using Core.Infrastructure.Database;
 
-public class Example : IAuditable
+public interface IAuditable
 {
-    public Guid Id { get; set; }
-    public string? Name { get; set; }
     public string? CreatedBy { get; set; }
+    
     public DateTimeOffset CreatedAt { get; set; }
+    
     public string? LastModifiedBy { get; set; }
+    
     public DateTimeOffset LastModifiedAt { get; set; }
 }

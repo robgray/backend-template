@@ -7,9 +7,11 @@ using Microsoft.Extensions.Options;
 
 namespace Api.Infrastructure.Options;
 
+using Core.Infrastructure.Database;
+
 public static class OptionsStartup
 {
-	public static IOptionsProvider AddValdOptions(
+	public static IOptionsProvider AddCustomOptions(
         this IServiceCollection services,
         IConfiguration configuration)
     {

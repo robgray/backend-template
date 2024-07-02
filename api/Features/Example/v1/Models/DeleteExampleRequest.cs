@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Example.v1.Models;
 
+using System;
+
 public class DeleteExampleRequest
 {
     [FromRoute]
     [Required]
-    public int ExampleId { get; set; }
+    public Guid ExampleId { get; set; }
 }

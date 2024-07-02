@@ -10,7 +10,12 @@ using Core.Infrastructure.Storage;
 
 namespace Api;
 
+using System;
 using Api.Infrastructure.Hangfire;
+using Api.Infrastructure.Options;
+using Api.Infrastructure.User;
+using Core.Infrastructure.Caching;
+using Core.Infrastructure.Database;
 using Core.Infrastructure.MappingLibrary;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
@@ -33,8 +38,17 @@ public class Startup
     
     public IWebHostEnvironment Env { get; }
 
+
+    private IOptionsProvider OptionsProvider { get; set; } =
+        Api.Infrastructure.Options.OptionsProvider.Empty;
+    
+
     public void ConfigureServices(IServiceCollection services)
     {
+        OptionsProvider = services.AddCustomOptions(Configuration);
+        
+        services.AddSingleton(TimeProvider.System);
+        
         services.AddLogging();
         
         services.AddApplicationInsightsTelemetry();
@@ -57,13 +71,17 @@ public class Startup
 
         services.AddCustomMessaging();
 
-        services.AddSingleton<ISystemClock, SystemClock>();
-
         services.AddCustomAzureStorage();
 
         services.AddCustomKeyVault();
 
         services.AddCustomHangfire(Configuration);
+
+        services.AddCustomUsers();
+
+        services.AddCustomCaching();
+
+        services.AddCustomDataContext(OptionsProvider.GetOptions<ConnectionStringsOptions>());
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

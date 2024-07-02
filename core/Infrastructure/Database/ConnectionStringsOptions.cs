@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Core.Infrastructure.Database;
 
-namespace Api.Infrastructure.Options;
+using System.ComponentModel.DataAnnotations;
 
 public class ConnectionStringsOptions
 {

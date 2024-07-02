@@ -1,31 +1,30 @@
 ﻿namespace Core.Domain.Queries.Example;
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Infrastructure.Database;
 using Infrastructure.Mediator;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 public static class GetExampleById
 {
     public class Query : IQuery<Result<Example>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 
-    public class Handler : IQueryHandler<Query, Result<Example>>
+    public class Handler(DataContext context) : IQueryHandler<Query, Result<Example>>
     {
-        public Task<Result<Example>> Handle(Query query, CancellationToken cancellationToken)
+        public async Task<Result<Example>> Handle(Query query, CancellationToken cancellationToken)
         {
-            if (query.Id >= 10)
-            {
-                return Task.FromResult(Result<Example>.Success(new Example
-                {
-                    Id = query.Id,
-                    Name = "Name",
-                }));
-            }
+            var example = await context.Examples.SingleOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
+
+            if (example is null)
+                return Result.NotFound();
             
-            return Task.FromResult(Result<Example>.NotFound());
+            return Result<Example>.Success(example);
         }
     }
 }

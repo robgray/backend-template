@@ -1,5 +1,6 @@
 ﻿namespace Api.Features.Example.v1;
 
+using System;
 using MapsterMapper;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ public class ExamplesController(ISender sender, IMapper mapper) : BaseController
 {
     [HttpGet("{exampleId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ExampleModel>> Get([FromRoute] int exampleId) =>
+    public async Task<ActionResult<ExampleModel>> Get([FromRoute] Guid exampleId) =>
         await ExecuteQuery<GetExampleById.Query, Example, ExampleModel>(exampleId);
 
     [HttpGet]
@@ -32,13 +33,13 @@ public class ExamplesController(ISender sender, IMapper mapper) : BaseController
     public async Task<ActionResult<ExampleModel>> Create([FromBody] CreateExampleRequest request) =>
         await ExecuteCommand<CreateExample.Command, Example, ExampleModel>(request);
 
-    [HttpPut("{exampleId?}")]
+    [HttpPut("{exampleId}")]
     [ProducesResponseType(typeof(ExampleModel), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ExampleModel>> Update([Range(0, int.MaxValue)] int exampleId, UpdateExampleRequest request) =>
+    public async Task<ActionResult<ExampleModel>> Update(Guid exampleId, UpdateExampleRequest request) =>
         await ExecuteCommand<UpdateExample.Command, Example, ExampleModel>(exampleId, request);
 
     [HttpDelete("{exampleId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Delete(int exampleId) =>
+    public async Task<ActionResult> Delete(Guid exampleId) =>
         await ExecuteAsyncCommand<DeleteExample.Command>(exampleId);
 }

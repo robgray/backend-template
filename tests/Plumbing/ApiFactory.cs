@@ -2,13 +2,18 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Core.Infrastructure.Database;
+using Core.Infrastructure.User;
 using Flurl.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -116,7 +121,11 @@ public class ApiFactory<TStartup>(ITestOutputHelper testOutputHelper) : WebAppli
                             .Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
                     });
                     webBuilder.UseStartup<TStartup>();
-                    webBuilder.ConfigureTestServices(ConfigureTestServices);
+                    webBuilder.ConfigureTestServices(services =>
+                    {
+                        ConfigureDataContext(services);
+                        ConfigureTestServices(services);
+                    });
                 })
             .ConfigureLogging(ConfigureLogging)
             .UseSerilog();
@@ -130,6 +139,34 @@ public class ApiFactory<TStartup>(ITestOutputHelper testOutputHelper) : WebAppli
         // This can be helpful if not all your existing tests have migrated to suit the TStartup provided.
         // You can add mocks for the retiring services.
     }
+    
+    private void ConfigureDataContext(IServiceCollection services)
+    {
+        // Remove real DataContext
+        var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
+        services.Remove(descriptor);
+
+        var contextId = Guid.NewGuid().ToString();
+        
+        //services.AddEntityFrameworkSqlServer();
+        services.AddDbContext<DataContext>(
+            (provider, options) =>
+            {
+                options.UseInMemoryDatabase(contextId);
+                options.ConfigureWarnings(wcb => wcb.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+
+                //options.UseInternalServiceProvider(provider);
+            });
+
+        var sp = services.BuildServiceProvider();
+
+        using var scope = sp.CreateScope();
+        var scopedServices = scope.ServiceProvider;
+        var db = scopedServices.GetRequiredService<DataContext>();
+
+        db.Database.EnsureCreated();
+    }
+
 
     private void ConfigureLogging(ILoggingBuilder logging)
     {
