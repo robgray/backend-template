@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>f5644193-7cdb-48b9-9806-a70325f56a8a</UserSecretsId>
+        <LangVersion>12</LangVersion>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="dbup-sqlserver" Version="5.0.37" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+      <PackageReference Include="Serilog" Version="3.1.1" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="DeploymentScripts\*.sql"/>
+        <EmbeddedResource Include="PostDeploymentScripts\*.sql"/>
+        <EmbeddedResource Include="PreDeploymentScripts\*.sql"/>
+        <EmbeddedResource Include="SchemaVersionsScripts\*.sql"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="PostDeploymentScripts\"/>
+        <Folder Include="PreDeploymentScripts\"/>
+    </ItemGroup>
+    
+    <Target Name="SecretStorePreCompileTarget" Condition="$(ASPNETCORE_ENVIRONMENT) == 'Development' And Exists('AddSecretStore.ps1')" BeforeTargets="Build">
+        <Exec Command="AddSecretStore.ps1" />
+    </Target>
+</Project>
