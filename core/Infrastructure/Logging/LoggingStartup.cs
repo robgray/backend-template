@@ -11,7 +11,7 @@ namespace Core.Infrastructure.Logging;
 
 public static class LoggingStartup
 {
-    public static ILogger BuildLoggerFromConfiguration(this LoggerConfiguration loggerConfiguration, IConfiguration configuration, Type startupType = null)
+    public static ILogger BuildLoggerFromConfiguration(this LoggerConfiguration loggerConfiguration, IConfiguration configuration, Type? startupType = null)
     {
         var environment = configuration.GetValue<string>("Environment") ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 

@@ -5,6 +5,7 @@
     <RootNamespace>Core</RootNamespace>
     <LangVersion>12</LangVersion>
     <AssemblyName>Core</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

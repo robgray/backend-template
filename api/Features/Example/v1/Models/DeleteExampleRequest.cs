@@ -7,5 +7,5 @@ public class DeleteExampleRequest
 {
     [FromRoute]
     [Required]
-    public int? ExampleId { get; set; }
+    public int ExampleId { get; set; }
 }

@@ -1,117 +1,117 @@
 ﻿namespace Api.Infrastructure.Mediator;
 
 using AutoMapper;
-using Azure.Storage.Sas;
 using Core.Extensions;
 using Core.Infrastructure.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
+#nullable disable
 /// <summary>
-    /// Extensions to support converting Result to an ActionResult
+/// Extensions to support converting Result to an ActionResult
+/// </summary>
+public static partial class ResultExtensions
+{
+    /// <summary>
+    /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
     /// </summary>
-    public static partial class ResultExtensions
+    /// <typeparam name="T">The value being returned</typeparam>
+    /// <param name="controller">The controller this is called from</param>
+    /// <param name="result">The Result to convert to an ActionResult</param>
+    /// <returns></returns>
+    public static ActionResult<T> ToActionResult<T>(this Result<T> result, ControllerBase controller)
     {
-        /// <summary>
-        /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
-        /// </summary>
-        /// <typeparam name="T">The value being returned</typeparam>
-        /// <param name="controller">The controller this is called from</param>
-        /// <param name="result">The Result to convert to an ActionResult</param>
-        /// <returns></returns>
-        public static ActionResult<T> ToActionResult<T>(this Result<T> result, ControllerBase controller)
-        {
-            return controller.ToActionResult((IResult)result);
-        }
+        return controller.ToActionResult((IResult)result);
+    }
 
-        /// <summary>
-        /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
-        /// </summary>
-        /// <param name="controller">The controller this is called from</param>
-        /// <param name="result">The Result to convert to an ActionResult</param>
-        /// <returns></returns>
-        public static ActionResult ToActionResult(this Result result, ControllerBase controller)
-        {
-            return controller.ToActionResult((IResult)result);
-        }
+    /// <summary>
+    /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
+    /// </summary>
+    /// <param name="controller">The controller this is called from</param>
+    /// <param name="result">The Result to convert to an ActionResult</param>
+    /// <returns></returns>
+    public static ActionResult ToActionResult(this Result result, ControllerBase controller)
+    {
+        return controller.ToActionResult((IResult)result);
+    }
 
-        /// <summary>
-        /// Convert a <see cref="Result{T}"/> to a <see cref="ActionResult"/>
-        /// </summary>
-        /// <typeparam name="T">The value being returned</typeparam>
-        /// <param name="controller">The controller this is called from</param>
-        /// <param name="result">The Result to convert to an ActionResult</param>
-        /// <returns></returns>
-        public static ActionResult<T> ToActionResult<T>(this ControllerBase controller,
-            Result<T> result)
-        {
-            return controller.ToActionResult((IResult)result);
-        }
+    /// <summary>
+    /// Convert a <see cref="Result{T}"/> to a <see cref="ActionResult"/>
+    /// </summary>
+    /// <typeparam name="T">The value being returned</typeparam>
+    /// <param name="controller">The controller this is called from</param>
+    /// <param name="result">The Result to convert to an ActionResult</param>
+    /// <returns></returns>
+    public static ActionResult<T> ToActionResult<T>(this ControllerBase controller,
+        Result<T> result)
+    {
+        return controller.ToActionResult((IResult)result);
+    }
 
-        /// <summary>
-        /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
-        /// </summary>
-        /// <param name="controller">The controller this is called from</param>
-        /// <param name="result">The Result to convert to an ActionResult</param>
-        /// <returns></returns>
-        public static ActionResult ToActionResult(this ControllerBase controller,
-            Result result)
-        {
-            return controller.ToActionResult((IResult)result);
-        }
+    /// <summary>
+    /// Convert a <see cref="Result"/> to a <see cref="ActionResult"/>
+    /// </summary>
+    /// <param name="controller">The controller this is called from</param>
+    /// <param name="result">The Result to convert to an ActionResult</param>
+    /// <returns></returns>
+    public static ActionResult ToActionResult(this ControllerBase controller,
+        Result result)
+    {
+        return controller.ToActionResult((IResult)result);
+    }
 
-        public static ActionResult<TMappedResponse> ToActionResult<TMappedResponse, TData>(this Result<TData> result, IMapper mapper, ControllerBase controller)
-        {
-            return controller.ToActionResult<TMappedResponse, TData>(mapper, result);
-        }
+    public static ActionResult<TMappedResponse> ToActionResult<TMappedResponse, TData>(this Result<TData> result, IMapper mapper, ControllerBase controller)
+    {
+        return controller.ToActionResult<TMappedResponse, TData>(mapper, result);
+    }
+    
+    internal static ActionResult<TMappedResponse> ToActionResult<TMappedResponse, TData>(this ControllerBase controller, IMapper mapper, IResult result)
+    {
+        var actionProps = controller.ControllerContext.ActionDescriptor.Properties;
+
+        var resultStatusMap = actionProps.TryGetValue(ResultConvention.RESULT_STATUS_MAP_PROP, out var prop) 
+            ?(prop as ResultStatusMap)
+            : new ResultStatusMap().AddDefaultMap();
+
+        var resultStatusOptions = resultStatusMap[result.Status];
+        var statusCode = (int)resultStatusOptions.GetStatusCode(controller.HttpContext.Request.Method);
+
+        var mappedData = MapperExtensions.Map<TMappedResponse>(mapper, result.GetValue());
         
-        internal static ActionResult<TMappedResponse> ToActionResult<TMappedResponse, TData>(this ControllerBase controller, IMapper mapper, IResult result)
+        switch (result.Status)
         {
-            var actionProps = controller.ControllerContext.ActionDescriptor.Properties;
-
-            var resultStatusMap = actionProps.TryGetValue(ResultConvention.RESULT_STATUS_MAP_PROP, out var prop) 
-                ?(prop as ResultStatusMap)
-                : new ResultStatusMap().AddDefaultMap();
-
-            var resultStatusOptions = resultStatusMap[result.Status];
-            var statusCode = (int)resultStatusOptions.GetStatusCode(controller.HttpContext.Request.Method);
-
-            var mappedData = MapperExtensions.Map<TMappedResponse>(mapper, result.GetValue());
-            
-            switch (result.Status)
-            {
-                case ResultStatus.Ok:
-                    return result is Result
-                        ? (ActionResult)controller.StatusCode(statusCode)
-                        : controller.StatusCode(statusCode, mappedData);
-                default:
-                    return resultStatusOptions.ResponseType == null
-                        ? (ActionResult)controller.StatusCode(statusCode)
-                        : controller.StatusCode(statusCode, resultStatusOptions.GetResponseObject(controller, result));
-            }
-        }
-        
-
-        internal static ActionResult ToActionResult(this ControllerBase controller, IResult result)
-        {
-            var actionProps = controller.ControllerContext.ActionDescriptor.Properties;
-
-            var resultStatusMap = actionProps.ContainsKey(ResultConvention.RESULT_STATUS_MAP_PROP) 
-                ?(actionProps[ResultConvention.RESULT_STATUS_MAP_PROP] as ResultStatusMap)
-                : new ResultStatusMap().AddDefaultMap();
-
-            var resultStatusOptions = resultStatusMap[result.Status];
-            var statusCode = (int)resultStatusOptions.GetStatusCode(controller.HttpContext.Request.Method);
-
-            switch (result.Status)
-            {
-                case ResultStatus.Ok:
-                    return typeof(Result).IsInstanceOfType(result)
-                        ? (ActionResult)controller.StatusCode(statusCode)
-                        : controller.StatusCode(statusCode, result.GetValue());
-                default:
-                    return resultStatusOptions.ResponseType == null
-                        ? (ActionResult)controller.StatusCode(statusCode)
-                        : controller.StatusCode(statusCode, resultStatusOptions.GetResponseObject(controller, result));
-            }
+            case ResultStatus.Ok:
+                return result is Result
+                    ? (ActionResult)controller.StatusCode(statusCode)
+                    : controller.StatusCode(statusCode, mappedData);
+            default:
+                return resultStatusOptions.ResponseType == null
+                    ? (ActionResult)controller.StatusCode(statusCode)
+                    : controller.StatusCode(statusCode, resultStatusOptions.GetResponseObject(controller, result));
         }
     }
+    
+
+    internal static ActionResult ToActionResult(this ControllerBase controller, IResult result)
+    {
+        var actionProps = controller.ControllerContext.ActionDescriptor.Properties;
+
+        var resultStatusMap = actionProps.ContainsKey(ResultConvention.RESULT_STATUS_MAP_PROP) 
+            ?(actionProps[ResultConvention.RESULT_STATUS_MAP_PROP] as ResultStatusMap)
+            : new ResultStatusMap().AddDefaultMap();
+
+        var resultStatusOptions = resultStatusMap[result.Status];
+        var statusCode = (int)resultStatusOptions.GetStatusCode(controller.HttpContext.Request.Method);
+
+        switch (result.Status)
+        {
+            case ResultStatus.Ok:
+                return typeof(Result).IsInstanceOfType(result)
+                    ? (ActionResult)controller.StatusCode(statusCode)
+                    : controller.StatusCode(statusCode, result.GetValue());
+            default:
+                return resultStatusOptions.ResponseType == null
+                    ? (ActionResult)controller.StatusCode(statusCode)
+                    : controller.StatusCode(statusCode, resultStatusOptions.GetResponseObject(controller, result));
+        }
+    }
+}

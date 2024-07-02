@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 
+#nullable disable
 public class ResultConvention : IActionModelConvention
 {
     public const string RESULT_STATUS_MAP_PROP = "ResultStatusMap";

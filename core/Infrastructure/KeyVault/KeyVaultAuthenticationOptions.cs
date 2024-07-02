@@ -7,8 +7,8 @@ public class KeyVaultOptions
     public static string Key => "KeyVault";
     
     [Required]   
-    public string StorageEncryptionKeyName { get; set; }
+    public required string StorageEncryptionKeyName { get; set; }
     
     [Required]  
-    public string KeyVaultName { get; set; }
+    public required string KeyVaultName { get; set; }
 }

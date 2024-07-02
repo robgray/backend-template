@@ -4,5 +4,5 @@ namespace Api.Features.Example.v1.Models;
 
 public class ListExamplesRequest : PagedRequest
 {
-    public string SearchText { get; set; }
+    public string? SearchText { get; set; }
 }

@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Core.Domain.Commands.Example;
 using Core.Domain.Queries.Example;
-using Core.Domain.Queries.Shared;
 
 namespace Api.Features.Example.v1.Models;
+
+using Core.Domain.Queries.Shared;
 
 public class ExampleMappingProfile : Profile
 {

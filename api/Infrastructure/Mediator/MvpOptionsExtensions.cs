@@ -27,7 +27,7 @@ public static class MvcOptionsExtensions
 	/// based on provided configuration
 	/// </summary>
 	/// <param name="configure">A <see cref="Action"/> to map <see cref="ResultStatus"/>es to <see cref="System.Net.HttpStatusCode"/>s</param>
-	public static MvcOptions AddResultConvention(this MvcOptions options, Action<ResultStatusMap> configure = null)
+	public static MvcOptions AddResultConvention(this MvcOptions options, Action<ResultStatusMap>? configure = null)
 	{
 		var resultStatusMap = new ResultStatusMap();
 		configure?.Invoke(resultStatusMap);

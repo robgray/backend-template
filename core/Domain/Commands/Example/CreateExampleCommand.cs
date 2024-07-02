@@ -10,7 +10,7 @@ public static class CreateExample
 {
     public class Command : ICommand<Example>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     public class Validator : AbstractValidator<Command>

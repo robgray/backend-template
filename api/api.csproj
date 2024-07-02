@@ -8,6 +8,7 @@
     <IsPackable>true</IsPackable>
     <LangVersion>12</LangVersion>
     <AssemblyName>Api</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

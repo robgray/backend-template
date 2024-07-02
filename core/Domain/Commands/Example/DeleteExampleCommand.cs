@@ -10,7 +10,7 @@ public static class DeleteExample
     {
         public int ExampleId { get; set; }
     }
-
+    
     public class Handler : IAsyncCommandHandler<Command>
     {
         public Task<Result> Handle(Command command, CancellationToken cancellationToken)

@@ -22,18 +22,14 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         var validatorType = typeof(IValidator<>).MakeGenericType(requestType);
 
         var scope = serviceProvider.CreateScope();
-        var validator = (IValidator)scope.ServiceProvider.GetService(validatorType);
-        if (validator == null)
-        {
-            return await next();
-        }
-
+        var validator = (IValidator?)scope.ServiceProvider.GetService(validatorType);
+        if (validator is null) return await next();
+        
         var result = await validator.ValidateAsync(new ValidationContext<TRequest>(request), cancellationToken);
         if (result.IsValid)
         {
             return await next();
         }
-
         throw new ValidationException(result.Errors);
     }
 }

@@ -19,9 +19,10 @@ public class ValidationError
 		Severity = severity;
 	}
 
-	public string Identifier { get; set; }
-	// TODO: Mark required and limit setting (see #179)
-	public string ErrorMessage { get; set; }
-	public string ErrorCode { get; set; }
+	public required string Identifier { get; set; }
+	
+	public required string ErrorMessage { get; set; }
+	
+	public required string ErrorCode { get; set; }
 	public ValidationSeverity Severity { get; set; } = ValidationSeverity.Error;
 }

@@ -5,5 +5,5 @@ namespace Api.Features.Example.v1.Models;
 public class CreateExampleRequest
 {
     [Required]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

@@ -9,6 +9,10 @@ public static class MessagingStartup
     public static void AddCustomMessaging(this IServiceCollection services)
     {
         services.AddTransient<IQueueSender, QueueSender>(provider =>
-            new QueueSender(provider.GetService<IConfiguration>().GetConnectionString("AzureStorage")));
+        {
+            var config = provider.GetRequiredService<IConfiguration>();
+            return new QueueSender(config.GetConnectionString("AzureStorage")!);
+        });
+
     }
 }

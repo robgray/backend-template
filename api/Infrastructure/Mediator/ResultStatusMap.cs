@@ -8,6 +8,7 @@ using System.Text;
 using Core.Infrastructure.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
+#nullable disable
 /// <summary>
 /// A map of <see cref="ResultStatus"/>es to <see cref="HttpStatusCode"/>s combined with other configuration
 /// </summary>

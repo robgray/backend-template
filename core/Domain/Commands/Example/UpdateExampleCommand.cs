@@ -10,7 +10,7 @@ public static class UpdateExample
     public class Command : ICommand<Example>
     {
         public int ExampleId { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     public class Handler : ICommandHandler<Command, Example>

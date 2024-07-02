@@ -10,7 +10,7 @@ public static class ListExamples
 {
     public class Query : IQuery<Result<PagedResults<Example>>>
     {
-        public string SearchText { get; set; }
+        public string? SearchText { get; set; }
         
         public int PageNumber { get; set; }
         

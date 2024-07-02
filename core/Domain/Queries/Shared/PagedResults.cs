@@ -1,5 +1,7 @@
 ﻿namespace Core.Domain.Queries.Shared;
 
+using System;
+
 public class PagedResults<T>
 {
     public PagedResults() { }
@@ -12,7 +14,7 @@ public class PagedResults<T>
         TotalItems = totalItems;
     }
 
-    public T[] Items { get; set; }
+    public T[] Items { get; set; } = [];
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }
     public int TotalItems { get; set; }

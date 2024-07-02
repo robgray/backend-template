@@ -4,5 +4,5 @@ public class AuthenticationOptions
 {
 	public const string Key = "Authentication";
 	
-	public string DiagnosticsKey { get; set; }
+	public string? DiagnosticsKey { get; set; }
 }
