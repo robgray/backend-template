@@ -2,10 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Core.Extensions;
 using Core.Infrastructure.Mediator;
 using Infrastructure.Mediator;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

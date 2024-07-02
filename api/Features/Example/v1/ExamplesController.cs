@@ -1,17 +1,17 @@
 ﻿namespace Api.Features.Example.v1;
 
+using MapsterMapper;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Models;
-using Shared;
-using AutoMapper;
+using Api.Features.Example.v1.Models;
+using Api.Features.Shared;
 using Core.Domain.Commands.Example;
+using Core.Domain.Models;
 using Core.Domain.Queries.Example;
 using Core.Domain.Queries.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Example = Core.Domain.Models.Example;
 
 [ApiController]
 [Route("v1/[controller]")]

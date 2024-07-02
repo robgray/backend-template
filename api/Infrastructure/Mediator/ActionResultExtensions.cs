@@ -1,8 +1,8 @@
 ﻿namespace Api.Infrastructure.Mediator;
 
-using AutoMapper;
 using Core.Extensions;
 using Core.Infrastructure.Mediator;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
 #nullable disable

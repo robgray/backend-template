@@ -28,17 +28,11 @@ using Xunit.Abstractions;
 /// test you're doing.  E.g. If you're testing a controller you can use
 /// MockMediatorStartup, which has the full webserver down to a mocked Mediatr.Sender.
 /// </typeparam>
-public class ApiFactory<TStartup> : WebApplicationFactory<TStartup>
+public class ApiFactory<TStartup>(ITestOutputHelper testOutputHelper) : WebApplicationFactory<TStartup>
     where TStartup : class
 {
-    private readonly ITestOutputHelper testOutputHelper;
     private Logger logger;
     private bool disposed;
-
-    protected ApiFactory(ITestOutputHelper testOutputHelper)
-    {
-        this.testOutputHelper = testOutputHelper;
-    }
 
     protected override void Dispose(bool disposing)
     {
