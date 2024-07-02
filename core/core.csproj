@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.12.0" />
     <PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.6.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
@@ -19,6 +18,8 @@
     <PackageReference Include="flurl.http" Version="4.0.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
     <PackageReference Include="MailKit" Version="4.6.0" />
+    <PackageReference Include="Mapster" Version="7.4.1-pre01" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.2-pre01" />
     <PackageReference Include="MediatR" Version="12.3.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
     <PackageReference Include="Microsoft.Azure.KeyVault.Extensions" Version="3.0.5" />   

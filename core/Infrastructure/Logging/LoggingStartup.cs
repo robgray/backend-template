@@ -53,10 +53,7 @@ public static class LoggingStartup
                     apiKey: seqServerApiKey,
                     controlLevelSwitch: levelSwitch)
             )
-            .If(isAppInsightsConfigured, c => c.WriteTo.ApplicationInsights(new TelemetryConfiguration()
-            {
-                ConnectionString = instrumentationKey,
-            }, new OperationTelemetryConverter()));
+            .If(isAppInsightsConfigured, c => c.WriteTo.ApplicationInsights(new TelemetryConfiguration { ConnectionString = instrumentationKey }, new OperationTelemetryConverter()));
 
         var logger = loggerConfiguration.CreateLogger();
         

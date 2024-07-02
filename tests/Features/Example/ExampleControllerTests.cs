@@ -14,13 +14,9 @@ using Plumbing;
 using Xunit;
 using Xunit.Abstractions;
 
-public class ExampleControllerTests : ApiFactory<Startup>
+public class ExampleControllerTests(ITestOutputHelper testOutputHelper) 
+    : ApiFactory<Startup>(testOutputHelper)
 {
-    public ExampleControllerTests(ITestOutputHelper testOutputHelper)
-        : base(testOutputHelper)
-    {
-    }
-
     [Fact]
     public async Task Create()
     {

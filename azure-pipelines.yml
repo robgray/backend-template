@@ -61,13 +61,6 @@ steps:
     command: 'test'
     arguments: '--no-restore --no-build tests'
 
-#- task: DotNetCoreCLI@2
-#  displayName: Database Test
-#  inputs:
-#    command: 'test'
-#    arguments: '--no-restore --no-build integration-tests'
-#  enabled: false
-
 - task: DotNetCoreCLI@2
   displayName: Publish
   inputs:
@@ -77,13 +70,6 @@ steps:
       functions/functions.csproj 
       api/api.csproj
     arguments: '--no-build --no-restore -o $(Build.ArtifactStagingDirectory)'
-
-#- task: DotNetCoreCLI@2
-#  displayName: Create SQL Scripts
-#  inputs:
-#    command: custom
-#    custom: 'ef '
-#    arguments: migrations script --output $(Build.ArtifactStagingDirectory)/migration.sql --idempotent --project ./migrations --no-build
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts

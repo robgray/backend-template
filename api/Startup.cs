@@ -3,7 +3,6 @@ using Api.Infrastructure.Controllers;
 using Api.Infrastructure.Cors;
 using Api.Infrastructure.Swagger;
 using Api.Infrastructure.Validation;
-using Core.Infrastructure.Automapper;
 using Core.Infrastructure.KeyVault;
 using Core.Infrastructure.Mediator;
 using Core.Infrastructure.Messaging;
@@ -11,6 +10,8 @@ using Core.Infrastructure.Storage;
 
 namespace Api;
 
+using Core.Infrastructure.MappingLibrary;
+using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -51,7 +52,7 @@ public class Startup
 
         services.AddCustomMediator();
 
-        services.AddCustomAutoMapper(typeof(Startup));
+        services.AddCustomMappingLibrary(typeof(Startup));
 
         services.AddCustomMessaging();
 
