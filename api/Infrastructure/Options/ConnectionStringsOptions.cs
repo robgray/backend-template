@@ -7,5 +7,5 @@ public class ConnectionStringsOptions
 	public const string Key = "ConnectionStrings";
 	
 	[Required]
-	public string Database { get; set; }
+	public required string Database { get; set; }
 }

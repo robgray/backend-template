@@ -29,8 +29,8 @@ public static class StorageStartup
         {
             var logger = Log.ForContext(typeof(StorageStartup));
 
-            var keyVaultOptions = provider.GetService<IOptions<KeyVaultOptions>>().Value;
-            var storageOptions = provider.GetService<IOptions<StorageOptions>>().Value;
+            var keyVaultOptions = provider.GetRequiredService<IOptions<KeyVaultOptions>>().Value;
+            var storageOptions = provider.GetRequiredService<IOptions<StorageOptions>>().Value;
             if (storageOptions.UseEmulator) return new BlobServiceClient("UseDevelopmentStorage=true");
 
             logger.Information("Using managed identity client {ManagedIdentityClientId} connect to key vault",

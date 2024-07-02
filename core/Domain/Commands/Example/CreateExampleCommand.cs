@@ -3,12 +3,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
+using Infrastructure.Mediator;
+using Models;
 
 public static class CreateExample
 {
-    public class Command : ICommand<Models.Example>
+    public class Command : ICommand<Example>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     public class Validator : AbstractValidator<Command>
@@ -19,17 +21,15 @@ public static class CreateExample
         }
     }
 
-    public class Handler : ICommandHandler<Command, Models.Example>
+    public class Handler : ICommandHandler<Command, Example>
     {
-        public async Task<Models.Example> Handle(Command command, CancellationToken cancellationToken)
+        public Task<Result<Example>> Handle(Command command, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-        
-            var example = new Models.Example { Id = 1, Name = command.Name };
+            var example = new Example { Id = 1, Name = command.Name };
         
             // TODO: Actually save it somewhere
 
-            return example;
+            return Task.FromResult(Result<Example>.Success(example));
         }
     }
 }

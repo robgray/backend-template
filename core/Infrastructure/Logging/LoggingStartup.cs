@@ -11,7 +11,7 @@ namespace Core.Infrastructure.Logging;
 
 public static class LoggingStartup
 {
-    public static ILogger BuildLoggerFromConfiguration(this LoggerConfiguration loggerConfiguration, IConfiguration configuration, Type startupType = null)
+    public static ILogger BuildLoggerFromConfiguration(this LoggerConfiguration loggerConfiguration, IConfiguration configuration, Type? startupType = null)
     {
         var environment = configuration.GetValue<string>("Environment") ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -53,7 +53,10 @@ public static class LoggingStartup
                     apiKey: seqServerApiKey,
                     controlLevelSwitch: levelSwitch)
             )
-            .If(isAppInsightsConfigured, c => c.WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), new OperationTelemetryConverter()));
+            .If(isAppInsightsConfigured, c => c.WriteTo.ApplicationInsights(new TelemetryConfiguration()
+            {
+                ConnectionString = instrumentationKey,
+            }, new OperationTelemetryConverter()));
 
         var logger = loggerConfiguration.CreateLogger();
         

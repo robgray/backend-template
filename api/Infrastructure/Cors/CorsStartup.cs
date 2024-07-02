@@ -8,7 +8,7 @@ public static class CorsStartup
 {
     public static void AddCustomCors(this IServiceCollection services, IConfiguration configuration)
     {
-        var allowedOrigins = configuration["AllowedHosts"];
+        var allowedOrigins = configuration["AllowedHosts"] ?? "*";
         services.AddCors(options => options.AddDefaultPolicy(builder => builder.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()

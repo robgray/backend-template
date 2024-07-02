@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Exceptions;
+﻿namespace Core.Infrastructure.Mediator.Exceptions;
 
 using System;
 

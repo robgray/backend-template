@@ -24,7 +24,10 @@ public class OptionsValidator : IOptionsValidator
 		var optionsType = typeof(TOptions);
 		var genericType = typeof(IOptions<>).MakeGenericType(optionsType);
 		var valueProperty = genericType.GetProperty(ValuePropertyName);
-		Options.Add((optionsType, genericType, valueProperty));
+		if (valueProperty is not null)
+		{
+			Options.Add((optionsType, genericType, valueProperty));
+		}
 	}
 
 	public IEnumerable<(Type optionsType, ValidateOptionsResult validateResult)> Validate()

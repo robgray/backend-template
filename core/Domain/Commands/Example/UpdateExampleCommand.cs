@@ -2,26 +2,26 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Infrastructure.Mediator;
+using Models;
 
 public static class UpdateExample
 {
-    public class Command : ICommand<Models.Example>
+    public class Command : ICommand<Example>
     {
         public int ExampleId { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
-    public class Handler : ICommandHandler<Command, Models.Example>
-    {
-        public async Task<Models.Example> Handle(Command command, CancellationToken cancellationToken)
+    public class Handler : ICommandHandler<Command, Example>
+    { 
+        public Task<Result<Example>> Handle(Command command, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-        
             // TODO: Actually update it
         
-            var example = new Models.Example { Id = 1, Name = command.Name };
+            var example = new Example { Id = command.ExampleId, Name = command.Name };
         
-            return example;
+            return Task.FromResult(Result<Example>.Success(example));
         }
     }
 }

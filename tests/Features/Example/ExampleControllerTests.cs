@@ -87,19 +87,21 @@ public class ExampleControllerTests : ApiFactory<Startup>
 
         var updateCommand = new UpdateExampleRequest
         {
-            Name = "Test"
+            ExampleId = 1, 
+            Name = "Test",
         };
 
         var client = CreateUnauthenticatedClient();
         var responseModel = await client.Request($"v1/examples/{example.Id}")
+            .AllowAnyHttpStatus()
             .PutJsonAsync(updateCommand)
             .ReceiveJson<ExampleModel>();
 
         responseModel.Should()
             .BeEquivalentTo(new
             {
-                ExampleId = 1,
-                updateCommand.Name
+                updateCommand.ExampleId,
+                updateCommand.Name,
             });
     }
 
@@ -128,13 +130,28 @@ public class ExampleControllerTests : ApiFactory<Startup>
     public async Task Get()
     {
         var client = CreateUnauthenticatedClient();
-        var responseModel = await client.Request($"v1/examples/1")
+        var responseModel = await client.Request($"v1/examples/10")
+            .AllowAnyHttpStatus()
             .GetJsonAsync<ExampleModel>();
 
         responseModel.Should().BeEquivalentTo(
             new 
             {
-                ExampleId = 1
+                ExampleId = 10,
             });
+    }
+    
+    [Fact]
+    public async Task Get_NonExistent_Returns404()
+    {
+        // Id's >= 10 will return an entity.
+        // Id's < 10 will not be found.
+        
+        var client = CreateUnauthenticatedClient();
+        var responseModel = await client.Request($"v1/examples/1")
+            .AllowAnyHttpStatus()
+            .GetAsync();
+
+        responseModel.StatusCode.Should().Be(StatusCodes.Status404NotFound);
     }
 }
