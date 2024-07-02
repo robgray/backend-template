@@ -10,6 +10,7 @@ using Core.Infrastructure.Storage;
 
 namespace Api;
 
+using Api.Infrastructure.Hangfire;
 using Core.Infrastructure.MappingLibrary;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
@@ -61,6 +62,8 @@ public class Startup
         services.AddCustomAzureStorage();
 
         services.AddCustomKeyVault();
+
+        services.AddCustomHangfire(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

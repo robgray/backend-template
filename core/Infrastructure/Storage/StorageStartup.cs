@@ -16,7 +16,7 @@ namespace Core.Infrastructure.Storage;
 
 public static class StorageStartup
 {
-    public static void AddCustomAzureStorage(this IServiceCollection services)
+    public static IServiceCollection AddCustomAzureStorage(this IServiceCollection services)
     {
         services.AddOptions<StorageOptions>()
             .Configure<IConfiguration>((settings, configuration) =>
@@ -47,6 +47,8 @@ public static class StorageStartup
                 new Uri($"https://{storageOptions.StorageAccount}.blob.core.windows.net/"), cred, options);
         });
         services.AddSingleton<IBlobStorageClient, BlobStorageClient>();
+
+        return services;
     }
 
     private static BlobClientOptions GetBlobClientOptions(KeyVaultOptions keyVaultOptions, TokenCredential cred)

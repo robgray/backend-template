@@ -7,7 +7,7 @@ namespace Api.Infrastructure.Swagger;
 
 public static class SwaggerStartup
 {
-    public static void AddCustomSwagger(this IServiceCollection services)
+    public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {
@@ -32,9 +32,11 @@ public static class SwaggerStartup
                 } 
             });
         });
+
+        return services;
     }
 
-    public static void UseCustomSwagger(this IApplicationBuilder app)
+    public static IApplicationBuilder UseCustomSwagger(this IApplicationBuilder app)
     {
         app.UseSwagger();
         app.UseSwaggerUI(c =>
@@ -45,5 +47,7 @@ public static class SwaggerStartup
             c.DefaultModelExpandDepth(3);
             c.DefaultModelsExpandDepth(0);
         });
+        
+        return app;
     }
 }

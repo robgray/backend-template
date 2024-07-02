@@ -6,7 +6,7 @@ namespace Core.Infrastructure.Messaging;
 
 public static class MessagingStartup
 {
-    public static void AddCustomMessaging(this IServiceCollection services)
+    public static IServiceCollection AddCustomMessaging(this IServiceCollection services)
     {
         services.AddTransient<IQueueSender, QueueSender>(provider =>
         {
@@ -14,5 +14,6 @@ public static class MessagingStartup
             return new QueueSender(config.GetConnectionString("AzureStorage")!);
         });
 
+        return services;
     }
 }
