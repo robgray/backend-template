@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+#nullable disable
 public class Result<T> : IResult
     {
         protected  Result() { }
@@ -146,7 +147,7 @@ public class Result<T> : IResult
         /// </summary>
         /// <param name="error">An optional instance of ErrorList with list of string error messages and CorrelationId.</param>
         /// <returns>A Result<typeparamref name="T"/></returns>
-        public static Result<T> Error(ErrorList? error = null)
+        public static Result<T> Error(ErrorList error = null)
         {
             return new Result<T>(ResultStatus.Error)
             {
