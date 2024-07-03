@@ -17,6 +17,7 @@ using Api.Infrastructure.User;
 using Core.Infrastructure.Caching;
 using Core.Infrastructure.Database;
 using Core.Infrastructure.MappingLibrary;
+using Infrastructure.HealthChecks;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -86,6 +87,8 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        var authenticationOptions = OptionsProvider.GetOptions<AuthenticationOptions>();
+        
         app.UseSerilogRequestLogging();
 
         if (env.IsDevelopment())
@@ -95,15 +98,19 @@ public class Startup
             app.UseCustomSwagger();
         }
 
-        app.UseHealthChecks("/health");
+        app.UseRouting();
+
+        app.UseCustomHealthChecks();
         
         app.ConfigureCustomCors();
 
         app.UseHttpsRedirection();
 
-        app.UseRouting();
+        
 
         app.ConfigureCustomAuth();
+
+        app.UseCustomHangfire(env, authenticationOptions);
 
         app.UseEndpoints(endpoints =>
         {
