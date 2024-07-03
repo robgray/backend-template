@@ -2,9 +2,9 @@
 
 using MediatR;
 
-public interface IQuery<out TResponse> : IRequest<TResponse> 
+public interface IQuery<TResponse> : IRequest<Result<TResponse>> 
 	where TResponse : class { }
 
-public interface IQueryHandler<in TQuery, TData> : IRequestHandler<TQuery, TData> 
-	where TQuery : IQuery<TData> 
+public interface IQueryHandler<in TQuery, TData> : IRequestHandler<TQuery, Result<TData>> 
+	where TQuery : IQuery<TData>, IRequest<Result<TData>>
 	where TData : class { }

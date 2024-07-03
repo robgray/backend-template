@@ -10,12 +10,12 @@ using Models;
 
 public static class GetExampleById
 {
-    public class Query : IQuery<Result<Example>>
+    public class Query : IQuery<Example>
     {
         public Guid Id { get; set; }
     }
 
-    public class Handler(DataContext context) : IQueryHandler<Query, Result<Example>>
+    public class Handler(DataContext context) : IQueryHandler<Query, Example>
     {
         public async Task<Result<Example>> Handle(Query query, CancellationToken cancellationToken)
         {

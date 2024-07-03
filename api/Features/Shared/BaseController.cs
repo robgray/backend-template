@@ -11,29 +11,29 @@ using Microsoft.AspNetCore.Mvc;
 
 public class BaseController(ISender sender, IMapper mapper) : ControllerBase
 {
-    protected async Task<ActionResult<TMappedResult>> ExecuteQuery<TQuery, TData, TMappedResult>(params object[] models) 
-        where TQuery : IQuery<Result<TData>>, new()
-        where TData : new()
+    protected async Task<ActionResult<TMappedResult>> ExecuteQuery<TQuery, TData, TMappedResult>(params object[]? models) 
+        where TQuery : IQuery<TData>, new()
+        where TData : class, new()
     {
         return await ExecuteMediatorRequest<TQuery, TData, TMappedResult>(models);
     }
     
-    protected async Task<ActionResult> ExecuteAsyncCommand<TCommand>(params object[] models)
+    protected async Task<ActionResult> ExecuteAsyncCommand<TCommand>(params object[]? models)
         where TCommand: IAsyncCommand, new()
     {
-        var command = MapperExtensions.Map<TCommand>(mapper, models);
+        var command = models is not null ? MapperExtensions.Map<TCommand>(mapper, models) : new TCommand();
         var result = (Result)await sender.Send(command);
         return result.ToActionResult(this);
     }
     
-    protected async Task<ActionResult<TMappedResult>> ExecuteCommand<TCommand, TData, TMappedResult>(params object[] models) 
+    protected async Task<ActionResult<TMappedResult>> ExecuteCommand<TCommand, TData, TMappedResult>(params object[]? models) 
         where TCommand : ICommand<TData>, new()
         where TData : new()
     {
         return await ExecuteMediatorRequest<TCommand, TData, TMappedResult>(models);
     }
 
-    private async Task<ActionResult<TMappedResult>> ExecuteMediatorRequest<TRequest, TData, TMappedResult>(params object[] models) 
+    private async Task<ActionResult<TMappedResult>> ExecuteMediatorRequest<TRequest, TData, TMappedResult>(params object[]? models) 
         where TRequest : IRequest<Result<TData>>, new()
         where TData : new()
     {

@@ -1,19 +1,17 @@
 ﻿namespace Core.Domain.Queries.Example;
 
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Infrastructure.Database;
+using Infrastructure.Database;
 using Infrastructure.Mediator;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Models;
 using Shared;
 
 public static class ListExamples
 {
-    public class Query : IQuery<Result<PagedResults<Example>>>
+    public class Query : IQuery<PagedResults<Example>>
     {
         public string? SearchText { get; set; }
         
@@ -22,7 +20,7 @@ public static class ListExamples
         public int PageSize { get; set; }
     }
 
-    public class Handler(DataContext context) : IQueryHandler<Query, Result<PagedResults<Example>>>
+    public class Handler(DataContext context) : IQueryHandler<Query, PagedResults<Example>>
     {
         public async Task<Result<PagedResults<Example>>> Handle(Query request,
             CancellationToken cancellationToken)
