@@ -45,13 +45,13 @@ To enable this a flag called **firstRunOnExistingDb** was added. This will:
 
 ### Examples ###    
 A normal run scenario:    
-```C:\YourDirectory>Vald.TeleHab.Library.DatabaseUpdater.exe --timeout="400" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"``` 
+```C:\YourDirectory>Db.exe --timeout="400" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"``` 
 
 In a Dev environment, where you are getting the connectionstring from UserSecrets inside the app:    
-```C:\YourDirectory>Vald.TeleHab.Library.DatabaseUpdater.exe``` 
+```C:\YourDirectory>Db.exe``` 
 
 Edge case where replacing EF Migrations:    
-```C:\YourDirectory>Vald.TeleHab.Library.DatabaseUpdater.exe --firstRunOnExistingDb="true" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"```
+```C:\YourDirectory>Db.exe --firstRunOnExistingDb="true" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"```
 
 Create HTML report of the scripts which would be run:     
-```C:\YourDirectory>Vald.TeleHab.Library.DatabaseUpdater.exe --previewReportPath="D:\Artifacts" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"```
+```C:\YourDirectory>Db.exe --previewReportPath="D:\Artifacts" --connectionString="Server=servername,1433;Initial Catalog=somedb;Persist Security Info=False;User ID=DbUser;Password=complexpassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=3200;"```

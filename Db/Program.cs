@@ -2,14 +2,13 @@
 // https://github.com/DbUp/DbUp/issues/512
 #define SUPPORTS_MICROSOFT_SQL_CLIENT
 
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Vald.TeleHab.Library.DatabaseUpdater;
-
-const string rootNamespace = "Vald.TeleHab.Library.DatabaseUpdater";
 
 var appConfiguration = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
@@ -27,7 +26,7 @@ using var host = Host
                 options.ConnectionString,
                 options.Timeout,
                 provider.GetRequiredService<ILogger>(),
-                rootNamespace));
+                Assembly.GetExecutingAssembly().GetName().Name));
         services.AddTransient<IDbUpdater, DbUpdater>();
         services.AddTransient<SchemaVersionsExecutor>();
     })
