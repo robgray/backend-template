@@ -52,5 +52,9 @@
       <DependentUpon>IgnorePropertiesResolver.cs</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Example\v1\Model\" />
+  </ItemGroup>
   
 </Project>
