@@ -1,23 +1,22 @@
-using Api.Infrastructure.Auth;
-using Api.Infrastructure.Controllers;
-using Api.Infrastructure.Cors;
-using Api.Infrastructure.Swagger;
-using Api.Infrastructure.Validation;
-using Core.Infrastructure.KeyVault;
-using Core.Infrastructure.Mediator;
-using Core.Infrastructure.Messaging;
-using Core.Infrastructure.Storage;
-
 namespace Api;
 
 using System;
+using Api.Infrastructure.Auth;
+using Api.Infrastructure.Controllers;
+using Api.Infrastructure.Cors;
 using Api.Infrastructure.Hangfire;
+using Api.Infrastructure.HealthChecks;
 using Api.Infrastructure.Options;
+using Api.Infrastructure.Swagger;
 using Api.Infrastructure.User;
+using Api.Infrastructure.Validation;
 using Core.Infrastructure.Caching;
 using Core.Infrastructure.Database;
+using Core.Infrastructure.KeyVault;
 using Core.Infrastructure.MappingLibrary;
-using Infrastructure.HealthChecks;
+using Core.Infrastructure.Mediator;
+using Core.Infrastructure.Messaging;
+using Core.Infrastructure.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,24 +33,24 @@ public class Startup
     }
 
     public IConfiguration Configuration { get; }
-    
+
     public IWebHostEnvironment Env { get; }
 
 
     private IOptionsProvider OptionsProvider { get; set; } =
-        Api.Infrastructure.Options.OptionsProvider.Empty;
-    
+        Infrastructure.Options.OptionsProvider.Empty;
+
 
     public void ConfigureServices(IServiceCollection services)
     {
         OptionsProvider = services.AddCustomOptions(Configuration);
-        
+
         services.AddSingleton(TimeProvider.System);
-        
+
         services.AddLogging();
-        
+
         services.AddApplicationInsightsTelemetry();
-        
+
         services.AddCustomCors(Configuration);
 
         services.AddCustomControllers();
@@ -86,7 +85,7 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         var authenticationOptions = OptionsProvider.GetOptions<AuthenticationOptions>();
-        
+
         app.UseSerilogRequestLogging();
 
         if (env.IsDevelopment())
@@ -99,20 +98,16 @@ public class Startup
         app.UseRouting();
 
         app.UseCustomHealthChecks();
-        
+
         app.ConfigureCustomCors();
 
         app.UseHttpsRedirection();
 
-        
 
         app.ConfigureCustomAuth();
 
         app.UseCustomHangfire(env, authenticationOptions);
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

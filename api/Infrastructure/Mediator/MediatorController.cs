@@ -2,14 +2,14 @@
 
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Core.Extensions;
 using Core.Infrastructure.Mediator;
 using Infrastructure.Mediator;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-public class BaseController(ISender sender, IMapper mapper) : ControllerBase
+public class MediatorController(ISender sender, IMapper mapper) : ControllerBase
 {
     protected async Task<ActionResult<TMappedResult>> ExecuteQuery<TQuery, TData, TMappedResult>(params object[]? models) 
         where TQuery : IQuery<TData>, new()
