@@ -1,12 +1,8 @@
-﻿using Api;
+﻿namespace Tests.Features.Example;
+
 using Api.Features.Example.v1.Models;
-
-namespace Tests.Features.Example;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Core.Domain.Models;
 using Core.Domain.Queries.Shared;
@@ -20,7 +16,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class ExampleControllerTests(ITestOutputHelper testOutputHelper) 
-    : ApiFactory<Startup>(testOutputHelper)
+    : ApiFactory(testOutputHelper)
 {
     [Fact]
     public async Task Create()

@@ -18,13 +18,11 @@ using Core.Infrastructure.Caching;
 using Core.Infrastructure.Database;
 using Core.Infrastructure.MappingLibrary;
 using Infrastructure.HealthChecks;
-using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Internal;
 using Serilog;
 
 public class Startup

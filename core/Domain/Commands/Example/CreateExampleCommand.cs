@@ -8,6 +8,7 @@ using Core.Infrastructure.Database;
 using FluentValidation;
 using Infrastructure.Mediator;
 using Models;
+using Serilog;
 
 public static class CreateExample
 {
