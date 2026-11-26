@@ -1,11 +1,12 @@
 ﻿namespace Api.Features.Shared;
 
+using Ardalis.Result;
 using System;
 using System.Threading.Tasks;
+using Ardalis.Result.AspNetCore;
 using AutoMapper;
 using Core.Extensions;
 using Core.Infrastructure.Mediator;
-using Infrastructure.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ public class MediatorController(ISender sender, IMapper mapper) : ControllerBase
         where TCommand: IAsyncCommand, new()
     {
         var command = models is not null ? MapperExtensions.Map<TCommand>(mapper, models) : new TCommand();
-        var result = (Result)await sender.Send(command);
+        var result = await sender.Send(command);
         return result.ToActionResult(this);
     }
     
@@ -40,8 +41,6 @@ public class MediatorController(ISender sender, IMapper mapper) : ControllerBase
         var command = models is not null && models.Length != 0 ? MapperExtensions.Map<TRequest>(mapper, models) : new TRequest();
         var response = await sender.Send(command);
         
-        if (response is not Result<TData> result) throw new InvalidOperationException("Return type must be of type Result");
-        
-        return result.ToActionResult<TMappedResult, TData>(mapper, this);
+        return response.Map(x => mapper.Map<TMappedResult>(x)).ToActionResult(this);
     }
 }

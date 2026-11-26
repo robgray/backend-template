@@ -1,14 +1,14 @@
-﻿using System.Data.SqlClient;
-using Api.Infrastructure.Options;
-using Hangfire;
-using Hangfire.Dashboard.BasicAuthorization;
+﻿namespace Api.Infrastructure.Hangfire;
+
+using Options;
+using global::Hangfire;
+using global::Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-namespace Api.Infrastructure.Hangfire;
+using Microsoft.Data.SqlClient;
 
 public static class HangfireStartup
 {
@@ -40,21 +40,21 @@ public static class HangfireStartup
         {
             applicationBuilder.UseHangfireDashboard(options: new DashboardOptions
             {
-                Authorization = new[]
-                {
+                Authorization =
+                [
                     new BasicAuthAuthorizationFilter(
                         new BasicAuthAuthorizationFilterOptions
                         {
-                            Users = new[]
-                            {
+                            Users =
+                            [
                                 new BasicAuthAuthorizationUser
                                 {
                                     Login = authenticationOptions.DiagnosticsKey,
                                     PasswordClear = authenticationOptions.DiagnosticsKey,
-                                },
-                            },
-                        }),
-                },
+                                }
+                            ],
+                        })
+                ],
             });
         }
 

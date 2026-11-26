@@ -1,8 +1,8 @@
-﻿using Core.Domain.Commands.Example;
+﻿namespace Api.Infrastructure.Validation;
+
+using Core.Domain.Commands.Example;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace Api.Infrastructure.Validation;
 
 public static class ValidationStartup
 {

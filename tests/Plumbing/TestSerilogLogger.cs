@@ -1,4 +1,4 @@
-﻿namespace Tests.Plumbing;
+﻿﻿namespace Tests.Plumbing;
 
 using Serilog;
 using Serilog.Core;
@@ -8,11 +8,19 @@ public static class TestSerilogLogger
 {
     public static Logger CreateTestLogger(ITestOutputHelper output)
     {
-        return new LoggerConfiguration()
+        const string localSeqUrl = "http://localhost:5341";
+
+        var loggerConfiguration = new LoggerConfiguration()
             .MinimumLevel.Warning()
-            .WriteTo.TestOutput(output)
-            .WriteTo.Seq("http://localhost:5341")
-            .Enrich.FromLogContext()
-            .CreateLogger();
+            .WriteTo.Seq(localSeqUrl)
+            .Enrich.FromLogContext();
+        
+        if (output is not null)
+        {
+            loggerConfiguration
+                .WriteTo.TestOutput(output);
+        }
+
+        return loggerConfiguration.CreateLogger();
     }
 }

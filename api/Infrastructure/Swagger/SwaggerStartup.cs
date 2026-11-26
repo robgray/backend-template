@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerUI;
+﻿namespace Api.Infrastructure.Swagger;
 
-namespace Api.Infrastructure.Swagger;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.OpenApi;
 
 public static class SwaggerStartup
 {
@@ -16,20 +16,7 @@ public static class SwaggerStartup
                 In = ParameterLocation.Header, 
                 Description = "Please insert 'Bearer ' and the then JWT into the field",
                 Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey 
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                { 
-                    new OpenApiSecurityScheme 
-                    { 
-                        Reference = new OpenApiReference 
-                        { 
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer" 
-                        } 
-                    },
-                    new string[] { } 
-                } 
+                Type = SecuritySchemeType.ApiKey, 
             });
         });
 

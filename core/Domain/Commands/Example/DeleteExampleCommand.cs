@@ -1,4 +1,6 @@
-﻿namespace Core.Domain.Commands.Example;
+﻿using Ardalis.Result;
+
+namespace Core.Domain.Commands.Example;
 
 using System;
 using System.Threading;

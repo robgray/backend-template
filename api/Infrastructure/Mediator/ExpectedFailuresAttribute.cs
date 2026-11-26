@@ -1,4 +1,6 @@
-﻿namespace Api.Infrastructure.Mediator;
+﻿using Ardalis.Result;
+
+namespace Api.Infrastructure.Mediator;
 
 using System;
 using System.Collections.Generic;

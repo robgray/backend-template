@@ -1,4 +1,6 @@
-﻿namespace Core.Infrastructure.Mediator;
+﻿using Ardalis.Result;
+
+namespace Core.Infrastructure.Mediator;
 
 using MediatR;
 

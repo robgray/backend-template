@@ -35,8 +35,7 @@ public class Startup
     public IConfiguration Configuration { get; }
 
     public IWebHostEnvironment Env { get; }
-
-
+    
     private IOptionsProvider OptionsProvider { get; set; } =
         Infrastructure.Options.OptionsProvider.Empty;
 
@@ -49,8 +48,12 @@ public class Startup
 
         services.AddLogging();
 
-        services.AddApplicationInsightsTelemetry();
-
+        var applicationInsightsOptions = OptionsProvider.GetOptions<ApplicationInsightsOptions>();
+        if (!string.IsNullOrWhiteSpace(applicationInsightsOptions.ConnectionString))
+        {
+            services.AddApplicationInsightsTelemetry();
+        }
+        
         services.AddCustomCors(Configuration);
 
         services.AddCustomControllers();

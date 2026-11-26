@@ -1,5 +1,6 @@
 ﻿namespace Core.Domain.Commands.Example;
 
+using Ardalis.Result;
 using System;
 using System.Linq;
 using System.Threading;
@@ -8,7 +9,6 @@ using Core.Infrastructure.Database;
 using FluentValidation;
 using Infrastructure.Mediator;
 using Models;
-using Serilog;
 
 public static class CreateExample
 {

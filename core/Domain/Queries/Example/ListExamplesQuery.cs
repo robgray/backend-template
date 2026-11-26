@@ -1,4 +1,6 @@
-﻿namespace Core.Domain.Queries.Example;
+﻿using Ardalis.Result;
+
+namespace Core.Domain.Queries.Example;
 
 using System.Linq;
 using System.Threading;

@@ -2,8 +2,8 @@
 
 using System;
 using System.Threading.Tasks;
-using Api.Features.Example.v1.Models;
-using Api.Features.Shared;
+using Models;
+using Shared;
 using AutoMapper;
 using Core.Domain.Commands.Example;
 using Core.Domain.Models;

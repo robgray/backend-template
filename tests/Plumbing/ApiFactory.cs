@@ -2,7 +2,6 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Api;
@@ -14,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +24,8 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Xunit.Abstractions;
+
+//using Xunit.Abstractions;
 
 /// <summary>
 ///     API integration test class.  Your test class should inherit this class, provide the desired
@@ -106,8 +108,7 @@ public class ApiFactory(ITestOutputHelper testOutputHelper) : WebApplicationFact
 			.ConfigureWebHostDefaults(
 				webBuilder =>
 				{
-					webBuilder.UseEnvironment(
-						"Development"); // Create a new environment to use its appSettings if you don't want to run against local/dev
+					webBuilder.UseEnvironment("Development"); // Create a new environment to use its appSettings if you don't want to run against local/dev
 					// Settings as Development is helpful if you have other code dependent on that environment.
 					webBuilder.UseContentRoot(".");
 					webBuilder.UseTestServer();
@@ -141,17 +142,18 @@ public class ApiFactory(ITestOutputHelper testOutputHelper) : WebApplicationFact
 
 	private void ConfigureDataContext(IServiceCollection services)
 	{
-		// Remove real DataContext
-		var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
-		services.Remove(descriptor);
+		// Remove the real DataContext configuration and options
+		services.RemoveAll<IDbContextOptionsConfiguration<DataContext>>();
+		services.RemoveAll<DbContextOptions<DataContext>>();
 
 		var contextId = Guid.NewGuid().ToString();
 
 		services.AddDbContext<DataContext>(
-			options =>
+			(serviceProvider, options) =>
 			{
 				options.UseInMemoryDatabase(contextId);
 				options.ConfigureWarnings(wcb => wcb.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+				options.UseApplicationServiceProvider(serviceProvider);
 			});
 
 		var sp = services.BuildServiceProvider();
